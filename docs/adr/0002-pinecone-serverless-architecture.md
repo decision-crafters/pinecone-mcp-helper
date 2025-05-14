@@ -12,6 +12,69 @@ Key challenges with the previous approach included:
 - Limited performance for high-throughput operations
 - Complexity in managing connections and retries
 
+## Domain Model
+
+The following diagram illustrates the domain model for the Pinecone serverless architecture integration, showing the key concepts and their relationships:
+
+```mermaid
+classDiagram
+    class PineconeIndexManager {
+        +ensure_index_exists(client, index_name, dimension, metric)
+        +upsert_vectors(index, vectors, namespace, batch_size)
+        +query(index, vector, namespace, top_k, filter, include_metadata)
+        +get_namespace_for_repo(repo_name)
+    }
+    
+    class ServerlessSpec {
+        +cloud: string
+        +region: string
+    }
+    
+    class PineconeGRPC {
+        +api_key: string
+        +environment: string
+        +Index(name)
+        +list_indexes()
+        +create_index(name, dimension, metric, spec)
+    }
+    
+    class GRPCIndex {
+        +name: string
+        +dimension: int
+        +metric: string
+        +upsert(vectors, namespace)
+        +query(vector, namespace, top_k, filter, include_metadata)
+        +delete(ids, namespace)
+    }
+    
+    class Vector {
+        +id: string
+        +values: List[float]
+        +metadata: Map<string, any>
+    }
+    
+    class QueryResult {
+        +matches: List[Match]
+        +namespace: string
+    }
+    
+    class Match {
+        +id: string
+        +score: float
+        +metadata: Map<string, any>
+    }
+    
+    PineconeIndexManager ..> PineconeGRPC: uses
+    PineconeGRPC ..> ServerlessSpec: configures with
+    PineconeGRPC ..> GRPCIndex: creates
+    PineconeIndexManager ..> GRPCIndex: manages
+    PineconeIndexManager ..> Vector: prepares
+    GRPCIndex ..> QueryResult: returns
+    QueryResult *-- Match: contains
+```
+
+This domain model defines clear boundaries between the index management layer, the Pinecone GRPC client, and the data structures used for vector operations. It establishes a consistent vocabulary for discussing vector storage and retrieval operations across the codebase.
+
 ## Decision
 We decided to implement Pinecone's serverless architecture using the GRPC client. This involved:
 

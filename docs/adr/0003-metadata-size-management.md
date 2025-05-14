@@ -18,6 +18,64 @@ When metadata exceeded the 40KB limit, Pinecone would reject the vector, resulti
 
 We needed a reliable strategy to ensure all vectors could be successfully stored in Pinecone while preserving as much useful metadata as possible.
 
+## Domain Model
+
+The following diagram illustrates the domain model for the metadata size management strategy, showing the key concepts and their relationships:
+
+```mermaid
+classDiagram
+    class MetadataSizeManager {
+        +calculate_metadata_size(metadata)
+        +truncate_metadata(metadata, max_size)
+        +prioritize_fields(metadata)
+        +log_truncation_event(metadata, original_size, new_size)
+    }
+    
+    class MetadataField {
+        +name: string
+        +value: any
+        +priority: int
+        +truncatable: boolean
+        +min_size: int
+    }
+    
+    class TruncationStrategy {
+        +name: string
+        +apply(text, target_size)
+        +calculate_reduction(text, target_size)
+    }
+    
+    class TruncationEvent {
+        +timestamp: datetime
+        +original_size: int
+        +new_size: int
+        +fields_truncated: List[string]
+        +truncation_strategy: string
+        +source_identifier: string
+    }
+    
+    class VectorPreparationService {
+        +prepare_vectors_for_upsert(chunks_with_embeddings)
+        +process_chunk(chunk)
+        +add_metadata(vector, metadata)
+    }
+    
+    class MetadataSizePolicy {
+        +max_size: int
+        +buffer_size: int
+        +critical_fields: List[string]
+        +truncation_order: List[string]
+    }
+    
+    VectorPreparationService ..> MetadataSizeManager: uses
+    MetadataSizeManager ..> MetadataField: manages
+    MetadataSizeManager ..> TruncationStrategy: applies
+    MetadataSizeManager ..> TruncationEvent: generates
+    MetadataSizeManager ..> MetadataSizePolicy: follows
+```
+
+This domain model defines clear boundaries between the metadata management components, the truncation strategies, and the vector preparation service. It establishes a consistent vocabulary for discussing metadata size management across the codebase.
+
 ## Decision
 We decided to implement a metadata truncation strategy that:
 

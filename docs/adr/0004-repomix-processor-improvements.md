@@ -14,6 +14,96 @@ The project uses Repomix to process repository content for ingestion into the Pi
 
 These limitations affected the quality and completeness of the data ingested into Pinecone, ultimately impacting search relevance and user experience.
 
+## Domain Model
+
+The following diagram illustrates the domain model for the Repomix processor improvements, showing the key concepts and their relationships:
+
+```mermaid
+classDiagram
+    class RepomixProcessor {
+        -config: Map<string, any>
+        -format_handlers: Map<string, Function>
+        +process(output, format_type)
+        -process_xml_output(output)
+        -process_json_output(output)
+        -process_custom_output(output)
+        -process_default_output(output)
+    }
+    
+    class FormatHandler {
+        <<interface>>
+        +process(output)
+        +extract_metadata(output)
+        +validate(output)
+    }
+    
+    class XMLFormatHandler {
+        +process(output)
+        +extract_metadata(output)
+        +validate(output)
+        -parse_xml(xml_string)
+        -extract_nodes(xml_doc)
+    }
+    
+    class JSONFormatHandler {
+        +process(output)
+        +extract_metadata(output)
+        +validate(output)
+        -parse_json(json_string)
+        -flatten_structure(json_obj)
+    }
+    
+    class CustomFormatHandler {
+        +process(output)
+        +extract_metadata(output)
+        +validate(output)
+        -apply_custom_rules(output)
+        -extract_patterns(output)
+    }
+    
+    class RepositoryContent {
+        +file_path: string
+        +content: string
+        +metadata: Map<string, any>
+        +language: string
+        +file_type: string
+        +size: int
+    }
+    
+    class ProcessingResult {
+        +success: boolean
+        +content_items: List[RepositoryContent]
+        +errors: List[ProcessingError]
+        +stats: ProcessingStats
+    }
+    
+    class ProcessingError {
+        +error_type: string
+        +message: string
+        +file_path: string
+        +recoverable: boolean
+    }
+    
+    class ProcessingStats {
+        +files_processed: int
+        +files_failed: int
+        +total_content_size: int
+        +processing_time: float
+    }
+    
+    RepomixProcessor ..> FormatHandler: uses
+    XMLFormatHandler ..|> FormatHandler: implements
+    JSONFormatHandler ..|> FormatHandler: implements
+    CustomFormatHandler ..|> FormatHandler: implements
+    FormatHandler ..> RepositoryContent: produces
+    RepomixProcessor ..> ProcessingResult: returns
+    ProcessingResult *-- RepositoryContent: contains
+    ProcessingResult *-- ProcessingError: contains
+    ProcessingResult *-- ProcessingStats: contains
+```
+
+This domain model defines clear boundaries between the processor, format handlers, and the content entities. It establishes a consistent vocabulary for discussing repository content processing across the codebase and enables a more flexible and extensible approach to handling different output formats.
+
 ## Decision
 We decided to improve the Repomix processor to better handle custom output formats. The improvements include:
 

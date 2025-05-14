@@ -12,6 +12,66 @@ The project initially used Model Context Protocol (MCP) functions to interact wi
 
 The team needed a more reliable and maintainable way to integrate with Firecrawl to ensure that web content could be properly searched, scraped, and stored in the Pinecone vector database.
 
+## Domain Model
+
+The following diagram illustrates the domain model for the Firecrawl integration, showing the key concepts and their relationships:
+
+```mermaid
+classDiagram
+    class FirecrawlClient {
+        -api_key: string
+        -client: FirecrawlSDK
+        +search(query, limit, scrapeOptions)
+        +scrape(url, formats, onlyMainContent, waitFor)
+        +deep_research(query, maxDepth, maxUrls, timeLimit)
+    }
+    
+    class SearchResult {
+        +url: string
+        +title: string
+        +description: string
+        +content: string
+        +source_type: string
+    }
+    
+    class ScrapeResult {
+        +url: string
+        +title: string
+        +content: string
+        +formats: List[string]
+        +metadata: Map<string, any>
+    }
+    
+    class DeepResearchResult {
+        +query: string
+        +summary: string
+        +sources: List[Source]
+        +insights: List[string]
+    }
+    
+    class Source {
+        +url: string
+        +title: string
+        +relevance: float
+        +content_snippet: string
+    }
+    
+    class WebContentProcessor {
+        +process_search_results(results)
+        +process_scrape_result(result)
+        +extract_metadata(content)
+    }
+    
+    FirecrawlClient ..> SearchResult: produces
+    FirecrawlClient ..> ScrapeResult: produces
+    FirecrawlClient ..> DeepResearchResult: produces
+    DeepResearchResult *-- Source: contains
+    WebContentProcessor ..> SearchResult: processes
+    WebContentProcessor ..> ScrapeResult: processes
+```
+
+This domain model establishes clear boundaries between the client interface, the different types of results, and the processing components. It defines a consistent vocabulary for discussing web content retrieval and processing across the codebase.
+
 ## Decision
 We decided to replace the MCP functions with the official Firecrawl Python SDK (version 2.5.4). This involved:
 - Updating the FirecrawlClient class to use the SDK

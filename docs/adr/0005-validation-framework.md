@@ -14,6 +14,64 @@ The reliability and quality of data ingested into the Pinecone vector database a
 
 These issues made it difficult to ensure the completeness and accuracy of the data in the Pinecone index, potentially affecting search quality and user experience.
 
+## Domain Model
+
+The following diagram illustrates the domain model for the validation framework, showing the key concepts and their relationships:
+
+```mermaid
+classDiagram
+    class ValidationService {
+        +validate_ingestion(index_name, namespace, original_content, threshold)
+        +generate_validation_report(results, success_rate, threshold)
+    }
+    
+    class ValidationResult {
+        +success: boolean
+        +success_rate: float
+        +threshold: float
+        +details: List[SampleValidation]
+        +report: ValidationReport
+    }
+    
+    class SampleValidation {
+        +sample_id: string
+        +success: boolean
+        +query_text: string
+        +expected_content: string
+        +found_content: string
+        +similarity_score: float
+    }
+    
+    class ValidationReport {
+        +summary: string
+        +metrics: ValidationMetrics
+        +failures: List[FailureAnalysis]
+        +recommendations: List[string]
+    }
+    
+    class ValidationMetrics {
+        +total_samples: int
+        +successful_samples: int
+        +success_rate: float
+        +average_similarity: float
+    }
+    
+    class FailureAnalysis {
+        +failure_type: string
+        +count: int
+        +examples: List[string]
+        +possible_causes: List[string]
+    }
+    
+    ValidationService ..> ValidationResult: creates
+    ValidationResult *-- SampleValidation: contains
+    ValidationResult *-- ValidationReport: contains
+    ValidationReport *-- ValidationMetrics: contains
+    ValidationReport *-- FailureAnalysis: contains
+```
+
+The domain model defines clear boundaries between the validation service, validation results, and reporting components. It establishes a consistent vocabulary for discussing validation concepts across the codebase.
+
 ## Decision
 We decided to implement a comprehensive validation framework with the following features:
 
