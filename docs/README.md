@@ -7,10 +7,23 @@ This directory contains the documentation for the Pinecone MCP Helper project, w
 - **Main documentation**: Organized into chapters in the root of the `docs/` directory
 - **Architecture Decision Records (ADRs)**: Located in the `adr/` subdirectory
 - **Assets**: CSS and other assets are in the `assets/` directory
+- **Real-World Examples**: Chapter 10 provides practical use cases and implementation examples
 
 ## Local Development
 
-To run the documentation site locally:
+To run the documentation site locally, you can use our deployment script:
+
+```bash
+./scripts/deploy_docs_locally.sh
+```
+
+This script will:
+- Check for Ruby and install a compatible Bundler version
+- Install dependencies locally (no sudo required)
+- Build the documentation site
+- Start a local server with auto-regeneration
+
+Alternatively, you can run the steps manually:
 
 1. Install Ruby and Bundler
 2. Run `bundle install` in the `docs/` directory
