@@ -1,0 +1,144 @@
+---
+layout: default
+title: Search Results
+---
+
+<h1>Search Results</h1>
+
+<div id="search-results">
+  <p>Loading search results...</p>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get the query parameter from the URL
+    var urlParams = new URLSearchParams(window.location.search);
+    var query = urlParams.get('q');
+    
+    if (!query) {
+      document.getElementById('search-results').innerHTML = '<p>No search query provided. Please try searching again.</p>';
+      return;
+    }
+    
+    // Display the search query
+    document.getElementById('search-results').innerHTML = '<p>Searching for: <strong>' + query + '</strong></p><div id="results-list"></div>';
+    
+    // Perform the search
+    searchDocumentation(query.toLowerCase());
+  });
+  
+  function searchDocumentation(query) {
+    // List of pages to search
+    var pages = [
+      { url: '/', title: 'Home' },
+      { url: '/01_command_line_interface.html', title: 'Command Line Interface' },
+      { url: '/02_pipeline_integration.html', title: 'Pipeline Integration' },
+      { url: '/03_firecrawl_integration.html', title: 'Firecrawl Integration' },
+      { url: '/04_repository_processing.html', title: 'Repository Processing' },
+      { url: '/05_embedding_transformation.html', title: 'Embedding Transformation' },
+      { url: '/06_pinecone_vector_management.html', title: 'Pinecone Vector Management' },
+      { url: '/07_configuration_management.html', title: 'Configuration Management' },
+      { url: '/08_validation_and_quality_assurance.html', title: 'Validation and Quality Assurance' },
+      { url: '/09_logging_and_error_handling.html', title: 'Logging and Error Handling' },
+      { url: '/10_real_world_examples.html', title: 'Real-World Examples' }
+    ];
+    
+    var resultsContainer = document.getElementById('results-list');
+    var resultsCount = 0;
+    
+    // Fetch and search each page
+    var promises = pages.map(function(page) {
+      return fetch('{{ site.baseurl }}' + page.url)
+        .then(response => response.text())
+        .then(html => {
+          // Create a temporary element to parse the HTML
+          var tempElement = document.createElement('div');
+          tempElement.innerHTML = html;
+          
+          // Extract the main content
+          var content = tempElement.querySelector('main');
+          if (!content) return null;
+          
+          // Get the text content
+          var textContent = content.textContent.toLowerCase();
+          
+          // Check if the query appears in the content
+          if (textContent.includes(query)) {
+            resultsCount++;
+            
+            // Find the context around the match
+            var index = textContent.indexOf(query);
+            var start = Math.max(0, index - 100);
+            var end = Math.min(textContent.length, index + query.length + 100);
+            var context = textContent.substring(start, end);
+            
+            // Highlight the query in the context
+            var highlightedContext = context.replace(
+              new RegExp(query, 'gi'), 
+              match => '<mark>' + match + '</mark>'
+            );
+            
+            // Create a result item
+            var resultItem = document.createElement('div');
+            resultItem.className = 'search-result';
+            resultItem.innerHTML = `
+              <h3><a href="{{ site.baseurl }}${page.url}">${page.title}</a></h3>
+              <p>...${highlightedContext}...</p>
+            `;
+            
+            return resultItem;
+          }
+          
+          return null;
+        })
+        .catch(error => {
+          console.error('Error fetching page:', error);
+          return null;
+        });
+    });
+    
+    // Process all results
+    Promise.all(promises)
+      .then(results => {
+        // Filter out null results
+        var validResults = results.filter(result => result !== null);
+        
+        // Display the results
+        if (validResults.length > 0) {
+          validResults.forEach(result => {
+            resultsContainer.appendChild(result);
+          });
+          
+          // Add a summary
+          var summary = document.createElement('p');
+          summary.innerHTML = `Found <strong>${validResults.length}</strong> results for <strong>${query}</strong>.`;
+          resultsContainer.insertBefore(summary, resultsContainer.firstChild);
+        } else {
+          resultsContainer.innerHTML = `<p>No results found for <strong>${query}</strong>. Try a different search term.</p>`;
+        }
+      });
+  }
+</script>
+
+<style>
+  .search-result {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .search-result h3 {
+    margin-top: 0;
+  }
+  
+  .search-result p {
+    margin-bottom: 0;
+    color: #666;
+  }
+  
+  mark {
+    background-color: #ffeb3b;
+    padding: 2px;
+    border-radius: 2px;
+  }
+</style>

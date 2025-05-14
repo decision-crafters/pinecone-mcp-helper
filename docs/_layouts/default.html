@@ -6,15 +6,119 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
     <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     {% if site.mermaid.enable %}
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    {% endif %}
+    <style>
+      /* Custom styles */
+      .search-container {
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+      }
+      .search-container input {
+        flex-grow: 1;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      .search-container button {
+        margin-left: 8px;
+        padding: 8px 12px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .navigation {
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .navigation a {
+        margin: 0 10px 0 0;
+        padding: 5px 10px;
+        text-decoration: none;
+        color: #0366d6;
+        border-radius: 3px;
+      }
+      .navigation a:hover {
+        background-color: #e9ecef;
+      }
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        border-radius: 4px;
+      }
+      .dropdown-menu a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+      .dropdown-menu a:hover {
+        background-color: #f1f1f1;
+      }
+      .show {
+        display: block;
+      }
+      .adr-banner {
+        background-color: #f0f7ff;
+        border-left: 4px solid #0366d6;
+        padding: 10px 15px;
+        margin: 20px 0;
+        border-radius: 0 4px 4px 0;
+      }
+      .chapter-title {
+        font-weight: bold;
+      }
+      .sidebar {
+        float: right;
+        width: 250px;
+        background-color: #f8f9fa;
+        padding: 15px;
+        margin-left: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+      .sidebar h3 {
+        margin-top: 0;
+      }
+      .sidebar ul {
+        padding-left: 20px;
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          float: none;
+          width: auto;
+          margin-left: 0;
+        }
+      }
+    </style>
     <script>
       document.addEventListener("DOMContentLoaded", function() {
+        {% if site.mermaid.enable %}
         mermaid.initialize({
           startOnLoad: true,
           theme: "default",
           securityLevel: "loose"
         });
+        {% endif %}
         
         // Dropdown menu functionality
         var dropdowns = document.querySelectorAll('.dropdown');
@@ -35,24 +139,46 @@
             });
           }
         });
+        
+        // Search functionality
+        var searchForm = document.getElementById('search-form');
+        if (searchForm) {
+          searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var query = document.getElementById('search-input').value.toLowerCase();
+            window.location.href = '{{ site.baseurl }}/search.html?q=' + encodeURIComponent(query);
+          });
+        }
       });
     </script>
-    {% endif %}
   </head>
   <body>
     <div class="container-lg px-3 my-5 markdown-body">
       <header>
         <h1><a href="{{ "/" | absolute_url }}">{{ site.title }}</a></h1>
         <p>{{ site.description }}</p>
+        
+        <!-- Search form -->
+        <div class="search-container">
+          <form id="search-form">
+            <input type="text" id="search-input" placeholder="Search documentation...">
+            <button type="submit"><i class="fas fa-search"></i></button>
+          </form>
+        </div>
       </header>
       
       <div class="navigation">
-        <a href="{{ site.baseurl }}/">Home</a> |
-        {% for chapter_num in (1..9) %}
+        <a href="{{ site.baseurl }}/"><i class="fas fa-home"></i> Home</a>
+        
+        {% for chapter_num in (1..10) %}
           {% capture chapter_path %}{{ chapter_num | prepend: '0' | slice: -2, 2 }}_{% endcapture %}
           {% for page in site.pages %}
-            {% if page.path contains chapter_path %}
-              <a href="{{ site.baseurl }}{{ page.url }}">Chapter {{ chapter_num }}</a> |
+            {% if page.path contains chapter_path and page.path contains '.md' and page.path != 'README.md' %}
+              {% if chapter_num == 10 %}
+                <a href="{{ site.baseurl }}{{ page.url }}"><i class="fas fa-lightbulb"></i> Real-World Examples</a>
+              {% else %}
+                <a href="{{ site.baseurl }}{{ page.url }}"><i class="fas fa-book"></i> Chapter {{ chapter_num }}</a>
+              {% endif %}
             {% endif %}
           {% endfor %}
         {% endfor %}
@@ -74,6 +200,28 @@
       </div>
       
       <main>
+        {% if page.path contains "index.md" or page.path contains "10_real_world_examples.md" %}
+          <!-- Sidebar for table of contents on specific pages -->
+          <div class="sidebar">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="{{ site.baseurl }}/">Documentation Home</a></li>
+              <li><a href="{{ site.baseurl }}/10_real_world_examples.html">Real-World Examples</a></li>
+              <li><a href="{{ site.baseurl }}/adr/">Architecture Decisions</a></li>
+            </ul>
+            
+            {% if page.path contains "10_real_world_examples.md" %}
+            <h3>Examples</h3>
+            <ul>
+              <li><a href="#example-1-creating-a-technical-documentation-search-engine">Documentation Search Engine</a></li>
+              <li><a href="#example-2-automated-code-review-assistant">Code Review Assistant</a></li>
+              <li><a href="#example-3-knowledge-base-for-machine-learning-projects">ML Knowledge Base</a></li>
+              <li><a href="#example-4-automated-api-documentation-generator">API Documentation Generator</a></li>
+            </ul>
+            {% endif %}
+          </div>
+        {% endif %}
+        
         {{ content }}
       </main>
       
