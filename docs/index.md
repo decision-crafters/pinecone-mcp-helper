@@ -1,4 +1,9 @@
-docs# Tutorial: pinecone-mcp-helper
+---
+layout: default
+title: Pinecone MCP Helper
+---
+
+# Tutorial: pinecone-mcp-helper
 
 **Pinecone MCP Helper** is an intelligent *repository ingestion pipeline* that transforms code and web content into searchable vector databases. It automates the process of extracting, embedding, and indexing content from Git repositories and web sources, enabling powerful semantic search and research capabilities using Pinecone's vector database technology.
 

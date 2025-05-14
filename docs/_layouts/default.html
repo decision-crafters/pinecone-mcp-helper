@@ -187,9 +187,9 @@
           <a href="#" class="dropdown-toggle">ADRs ▾</a>
           <div class="dropdown-menu">
             <a href="{{ site.baseurl }}/adr/">ADR Index</a>
-            {% assign adrs = site.pages | where_exp: "page", "page.path contains 'adr/' and page.name != 'index.md' and page.name != 'README.md' and page.name != 'template.md'" | sort: "name" %}
-            {% for adr in adrs %}
-              <a href="{{ site.baseurl }}{{ adr.url }}">{{ adr.name | replace: ".md", "" }}</a>
+            {% assign adrs = site.pages | where_exp: "item", "item.path contains 'adr'" | sort: "name" %}
+            {% for item in adrs %}
+              <a href="{{ site.baseurl }}{{ item.url }}">{{ item.name | replace: ".md", "" }}</a>
             {% endfor %}
           </div>
         </div>
