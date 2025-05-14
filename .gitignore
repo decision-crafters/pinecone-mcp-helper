@@ -67,3 +67,7 @@ bazel-*
 # Output files
 output/
 *.out
+
+# Project specific files
+tasks.json
+WebGUI.md
