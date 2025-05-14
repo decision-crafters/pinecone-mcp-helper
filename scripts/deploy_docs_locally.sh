@@ -71,7 +71,7 @@ bundle _2.4.22_ exec jekyll build --destination ../docs-site
 echo "🌐 Starting local server..."
 echo "📝 Documentation will be available at http://localhost:4000"
 echo "🛑 Press Ctrl+C to stop the server"
-bundle _2.4.22_ exec jekyll serve --destination ../docs-site --host 0.0.0.0
+bundle _2.4.22_ exec jekyll serve --destination ../docs-site --host 0.0.0.0 --baseurl ''
 
 # This part will only execute if the server is stopped
 echo "✅ Local server stopped"
