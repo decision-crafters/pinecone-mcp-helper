@@ -1,0 +1,34 @@
+pinecone:
+  dimension: 384   # Vector dimension for the Pinecone index
+  metric: cosine   # Similarity metric (cosine, dotproduct, euclidean)
+  # index_name will be automatically derived from repository name (repo-name-repo)
+
+embedding:
+  model: pinecone-sparse-english-v0  # Embedding model to use
+  batch_size: 10  # Number of chunks to embed in a single batch
+
+repomix:
+  max_files: 100  # Maximum number of files to process
+  file_types:  # File types to include
+    - ".py"
+    - ".js"
+    - ".jsx"
+    - ".ts"
+    - ".tsx"
+    - ".md"
+    - ".html"
+    - ".css"
+    - ".json"
+  exclude_patterns:  # Patterns to exclude
+    - "node_modules"
+    - "dist"
+    - "build"
+    - "__pycache__"
+
+firecrawl:
+  max_urls: 20  # Maximum number of URLs to scrape
+  chunk_size: 1000  # Size of content chunks
+  deep_research:
+    enabled: true  # Enable deep research functionality
+    max_depth: 3  # Maximum depth of research iterations (1-10)
+    max_urls: 10  # Maximum number of URLs to analyze per topic (1-1000)

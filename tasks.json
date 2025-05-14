@@ -1,0 +1,155 @@
+{
+  "tasks": [
+    {
+      "id": "8eb29adb-1430-4e3b-b458-a4636a43021f",
+      "name": "Create ADR directory structure",
+      "description": "Create a new directory structure for Architecture Decision Records (ADRs) to document key architectural decisions in the project. This will establish a standard format for documenting decisions going forward.",
+      "status": "待處理",
+      "dependencies": [],
+      "createdAt": "2025-05-14T15:19:32.593Z",
+      "updatedAt": "2025-05-14T15:19:32.593Z",
+      "implementationGuide": "1. Create a new directory at `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/docs/adr/`\n2. Create a template file at `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/docs/adr/template.md` with the standard ADR format (Title, Status, Context, Decision, Consequences, Alternatives Considered)\n3. Add a README.md file in the ADR directory explaining the purpose of ADRs and how to use them",
+      "verificationCriteria": "- Directory structure exists at `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/docs/adr/`\n- Template file exists with the correct format\n- README.md file exists with clear instructions",
+      "analysisResult": "After analyzing the project architecture and requirements, I've developed a comprehensive plan for documenting and committing architectural decisions for the entire pinecone-mcp-helper project. The project is a pipeline for ingesting content from Git repositories and web links into a Pinecone vector database, with key components including Git repository management, Repomix processing, Firecrawl integration, embedding functionality, and Pinecone integration. Several important architectural decisions have been implemented, including Pinecone serverless architecture with GRPC client, metadata size management, Repomix processor improvements, validation framework, and Firecrawl integration. These decisions should be properly documented through ADRs and organized into logical commits that reflect the overall system architecture."
+    },
+    {
+      "id": "f574e6dd-4a40-4807-b1cf-2e7f63afb66c",
+      "name": "Document Firecrawl SDK integration decision",
+      "description": "Document the architectural decision to switch from MCP functions to the Firecrawl SDK, including the context, rationale, consequences, and alternatives considered.",
+      "status": "待處理",
+      "dependencies": [
+        {
+          "taskId": "8eb29adb-1430-4e3b-b458-a4636a43021f"
+        }
+      ],
+      "createdAt": "2025-05-14T15:19:32.593Z",
+      "updatedAt": "2025-05-14T15:19:32.593Z",
+      "implementationGuide": "Create a file at `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/docs/adr/0001-use-firecrawl-sdk.md` with the following sections:\n1. Title: \"Use Firecrawl SDK Instead of MCP Functions\"\n2. Status: \"Accepted\"\n3. Context: Explain the limitations of the previous MCP approach\n4. Decision: Detail the switch to the Firecrawl SDK v2.5.4\n5. Consequences: List both positive outcomes (better reliability, error handling) and negative outcomes (required code changes, new dependency)\n6. Alternatives Considered: Describe other options that were evaluated",
+      "verificationCriteria": "- ADR file exists at the correct location\n- All required sections are present and complete\n- The document clearly explains why the decision was made\n- The consequences and alternatives are thoroughly documented",
+      "analysisResult": "After analyzing the project architecture and requirements, I've developed a comprehensive plan for documenting and committing architectural decisions for the entire pinecone-mcp-helper project. The project is a pipeline for ingesting content from Git repositories and web links into a Pinecone vector database, with key components including Git repository management, Repomix processing, Firecrawl integration, embedding functionality, and Pinecone integration. Several important architectural decisions have been implemented, including Pinecone serverless architecture with GRPC client, metadata size management, Repomix processor improvements, validation framework, and Firecrawl integration. These decisions should be properly documented through ADRs and organized into logical commits that reflect the overall system architecture."
+    },
+    {
+      "id": "cab22cef-5cf2-44ea-83f3-c80ab2b4f48b",
+      "name": "Document Pinecone serverless architecture decision",
+      "description": "Document the architectural decision to use Pinecone serverless architecture with GRPC client, including the context, rationale, consequences, and alternatives considered.",
+      "status": "待處理",
+      "dependencies": [
+        {
+          "taskId": "8eb29adb-1430-4e3b-b458-a4636a43021f"
+        }
+      ],
+      "createdAt": "2025-05-14T15:19:32.593Z",
+      "updatedAt": "2025-05-14T15:19:32.593Z",
+      "implementationGuide": "Create a file at `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/docs/adr/0002-pinecone-serverless-architecture.md` with the following sections:\n1. Title: \"Pinecone Serverless Architecture with GRPC Client\"\n2. Status: \"Accepted\"\n3. Context: Explain the requirements for vector storage and retrieval\n4. Decision: Detail the implementation of Pinecone serverless architecture with GRPC client\n5. Consequences: List both positive outcomes (scalability, performance) and negative outcomes (complexity, cost)\n6. Alternatives Considered: Describe other options that were evaluated",
+      "verificationCriteria": "- ADR file exists at the correct location\n- All required sections are present and complete\n- The document clearly explains why the decision was made\n- The consequences and alternatives are thoroughly documented",
+      "analysisResult": "After analyzing the project architecture and requirements, I've developed a comprehensive plan for documenting and committing architectural decisions for the entire pinecone-mcp-helper project. The project is a pipeline for ingesting content from Git repositories and web links into a Pinecone vector database, with key components including Git repository management, Repomix processing, Firecrawl integration, embedding functionality, and Pinecone integration. Several important architectural decisions have been implemented, including Pinecone serverless architecture with GRPC client, metadata size management, Repomix processor improvements, validation framework, and Firecrawl integration. These decisions should be properly documented through ADRs and organized into logical commits that reflect the overall system architecture."
+    },
+    {
+      "id": "657814a1-d953-41b9-8e8e-de23624b8ed1",
+      "name": "Document metadata size management strategy",
+      "description": "Document the architectural decision to implement metadata truncation to stay within Pinecone's 40KB limit, including the context, rationale, consequences, and alternatives considered.",
+      "status": "待處理",
+      "dependencies": [
+        {
+          "taskId": "8eb29adb-1430-4e3b-b458-a4636a43021f"
+        }
+      ],
+      "createdAt": "2025-05-14T15:19:32.593Z",
+      "updatedAt": "2025-05-14T15:19:32.593Z",
+      "implementationGuide": "Create a file at `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/docs/adr/0003-metadata-size-management.md` with the following sections:\n1. Title: \"Metadata Size Management Strategy\"\n2. Status: \"Accepted\"\n3. Context: Explain the Pinecone metadata size limitation and its impact\n4. Decision: Detail the implementation of metadata truncation\n5. Consequences: List both positive outcomes (reliable storage) and negative outcomes (potential information loss)\n6. Alternatives Considered: Describe other options that were evaluated",
+      "verificationCriteria": "- ADR file exists at the correct location\n- All required sections are present and complete\n- The document clearly explains why the decision was made\n- The consequences and alternatives are thoroughly documented",
+      "analysisResult": "After analyzing the project architecture and requirements, I've developed a comprehensive plan for documenting and committing architectural decisions for the entire pinecone-mcp-helper project. The project is a pipeline for ingesting content from Git repositories and web links into a Pinecone vector database, with key components including Git repository management, Repomix processing, Firecrawl integration, embedding functionality, and Pinecone integration. Several important architectural decisions have been implemented, including Pinecone serverless architecture with GRPC client, metadata size management, Repomix processor improvements, validation framework, and Firecrawl integration. These decisions should be properly documented through ADRs and organized into logical commits that reflect the overall system architecture."
+    },
+    {
+      "id": "13d090a3-066f-4c84-b063-33794df3d61b",
+      "name": "Document Repomix processor improvements",
+      "description": "Document the architectural decision to improve the Repomix processor for better handling of custom output formats, including the context, rationale, consequences, and alternatives considered.",
+      "status": "待處理",
+      "dependencies": [
+        {
+          "taskId": "8eb29adb-1430-4e3b-b458-a4636a43021f"
+        }
+      ],
+      "createdAt": "2025-05-14T15:19:32.593Z",
+      "updatedAt": "2025-05-14T15:19:32.593Z",
+      "implementationGuide": "Create a file at `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/docs/adr/0004-repomix-processor-improvements.md` with the following sections:\n1. Title: \"Repomix Processor Improvements\"\n2. Status: \"Accepted\"\n3. Context: Explain the challenges with processing repository content\n4. Decision: Detail the improvements made to the Repomix processor\n5. Consequences: List both positive outcomes (better handling of custom formats) and negative outcomes (complexity)\n6. Alternatives Considered: Describe other options that were evaluated",
+      "verificationCriteria": "- ADR file exists at the correct location\n- All required sections are present and complete\n- The document clearly explains why the decision was made\n- The consequences and alternatives are thoroughly documented",
+      "analysisResult": "After analyzing the project architecture and requirements, I've developed a comprehensive plan for documenting and committing architectural decisions for the entire pinecone-mcp-helper project. The project is a pipeline for ingesting content from Git repositories and web links into a Pinecone vector database, with key components including Git repository management, Repomix processing, Firecrawl integration, embedding functionality, and Pinecone integration. Several important architectural decisions have been implemented, including Pinecone serverless architecture with GRPC client, metadata size management, Repomix processor improvements, validation framework, and Firecrawl integration. These decisions should be properly documented through ADRs and organized into logical commits that reflect the overall system architecture."
+    },
+    {
+      "id": "e0a049d6-6763-44c3-842e-c7f76f973cf6",
+      "name": "Document validation framework implementation",
+      "description": "Document the architectural decision to implement a validation framework with a 60% success threshold, including the context, rationale, consequences, and alternatives considered.",
+      "status": "待處理",
+      "dependencies": [
+        {
+          "taskId": "8eb29adb-1430-4e3b-b458-a4636a43021f"
+        }
+      ],
+      "createdAt": "2025-05-14T15:19:32.593Z",
+      "updatedAt": "2025-05-14T15:19:32.593Z",
+      "implementationGuide": "Create a file at `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/docs/adr/0005-validation-framework.md` with the following sections:\n1. Title: \"Content Validation Framework\"\n2. Status: \"Accepted\"\n3. Context: Explain the need for validating content ingestion\n4. Decision: Detail the implementation of the validation framework with 60% success threshold\n5. Consequences: List both positive outcomes (quality assurance) and negative outcomes (overhead)\n6. Alternatives Considered: Describe other options that were evaluated",
+      "verificationCriteria": "- ADR file exists at the correct location\n- All required sections are present and complete\n- The document clearly explains why the decision was made\n- The consequences and alternatives are thoroughly documented",
+      "analysisResult": "After analyzing the project architecture and requirements, I've developed a comprehensive plan for documenting and committing architectural decisions for the entire pinecone-mcp-helper project. The project is a pipeline for ingesting content from Git repositories and web links into a Pinecone vector database, with key components including Git repository management, Repomix processing, Firecrawl integration, embedding functionality, and Pinecone integration. Several important architectural decisions have been implemented, including Pinecone serverless architecture with GRPC client, metadata size management, Repomix processor improvements, validation framework, and Firecrawl integration. These decisions should be properly documented through ADRs and organized into logical commits that reflect the overall system architecture."
+    },
+    {
+      "id": "486e0679-566a-48df-a711-008035195a21",
+      "name": "Prepare Firecrawl integration commit",
+      "description": "Prepare a Git commit that includes all the modified and created files related to the Firecrawl integration changes, with a clear and informative commit message.",
+      "status": "待處理",
+      "dependencies": [],
+      "createdAt": "2025-05-14T15:19:32.593Z",
+      "updatedAt": "2025-05-14T15:19:32.593Z",
+      "implementationGuide": "1. Verify all modified files are ready for commit:\n   - `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/repo_ingestion/firecrawl/crawler.py`\n   - `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/repo_ingestion/firecrawl/search.py`\n   - `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/test_firecrawl.py`\n   - `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/requirements.txt`\n   - `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/query_firecrawl.py`\n2. Use the following commit message format:\n```\nfeat(firecrawl): Replace MCP functions with Firecrawl SDK\n\n- Update FirecrawlClient to use Firecrawl Python SDK v2.5.4\n- Enhance error handling and logging for better debugging\n- Fix response handling in search and scrape methods\n- Add query_firecrawl.py script to validate integration\n- Update requirements.txt to include Firecrawl SDK v2.5.4\n\nThis change improves the reliability and functionality of the Firecrawl integration by using the official SDK instead of MCP functions.\n```",
+      "verificationCriteria": "- All modified and created files are included in the commit\n- The commit message follows the conventional commits format\n- The commit message clearly explains what was changed and why",
+      "analysisResult": "After analyzing the project architecture and requirements, I've developed a comprehensive plan for documenting and committing architectural decisions for the entire pinecone-mcp-helper project. The project is a pipeline for ingesting content from Git repositories and web links into a Pinecone vector database, with key components including Git repository management, Repomix processing, Firecrawl integration, embedding functionality, and Pinecone integration. Several important architectural decisions have been implemented, including Pinecone serverless architecture with GRPC client, metadata size management, Repomix processor improvements, validation framework, and Firecrawl integration. These decisions should be properly documented through ADRs and organized into logical commits that reflect the overall system architecture."
+    },
+    {
+      "id": "72b195b4-8302-4176-b69b-718fc4c063a2",
+      "name": "Prepare ADR documentation commit",
+      "description": "Prepare a Git commit that includes all the ADR documentation files, with a clear and informative commit message.",
+      "status": "待處理",
+      "dependencies": [
+        {
+          "taskId": "f574e6dd-4a40-4807-b1cf-2e7f63afb66c"
+        },
+        {
+          "taskId": "cab22cef-5cf2-44ea-83f3-c80ab2b4f48b"
+        },
+        {
+          "taskId": "657814a1-d953-41b9-8e8e-de23624b8ed1"
+        },
+        {
+          "taskId": "13d090a3-066f-4c84-b063-33794df3d61b"
+        },
+        {
+          "taskId": "e0a049d6-6763-44c3-842e-c7f76f973cf6"
+        }
+      ],
+      "createdAt": "2025-05-14T15:19:32.593Z",
+      "updatedAt": "2025-05-14T15:19:32.593Z",
+      "implementationGuide": "1. Verify all ADR files are ready for commit:\n   - `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/docs/adr/README.md`\n   - `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/docs/adr/template.md`\n   - `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/docs/adr/0001-use-firecrawl-sdk.md`\n   - `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/docs/adr/0002-pinecone-serverless-architecture.md`\n   - `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/docs/adr/0003-metadata-size-management.md`\n   - `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/docs/adr/0004-repomix-processor-improvements.md`\n   - `/Users/tosinakinosho/workspaces/pinecone-mcp-helper/docs/adr/0005-validation-framework.md`\n2. Use the following commit message format:\n```\ndocs: Add Architecture Decision Records (ADRs)\n\n- Create ADR directory structure and template\n- Document key architectural decisions:\n  - Firecrawl SDK integration\n  - Pinecone serverless architecture\n  - Metadata size management\n  - Repomix processor improvements\n  - Content validation framework\n\nThis change improves project documentation and provides context for architectural decisions.\n```",
+      "verificationCriteria": "- All ADR files are included in the commit\n- The commit message follows the conventional commits format\n- The commit message clearly explains what was changed and why",
+      "analysisResult": "After analyzing the project architecture and requirements, I've developed a comprehensive plan for documenting and committing architectural decisions for the entire pinecone-mcp-helper project. The project is a pipeline for ingesting content from Git repositories and web links into a Pinecone vector database, with key components including Git repository management, Repomix processing, Firecrawl integration, embedding functionality, and Pinecone integration. Several important architectural decisions have been implemented, including Pinecone serverless architecture with GRPC client, metadata size management, Repomix processor improvements, validation framework, and Firecrawl integration. These decisions should be properly documented through ADRs and organized into logical commits that reflect the overall system architecture."
+    },
+    {
+      "id": "8f8ca22e-52a6-4395-b63a-35a48aadd922",
+      "name": "Push changes to GitHub repository",
+      "description": "Push the committed changes to the GitHub repository at git@github.com:decision-crafters/pinecone-mcp-helper.git.",
+      "status": "待處理",
+      "dependencies": [
+        {
+          "taskId": "486e0679-566a-48df-a711-008035195a21"
+        },
+        {
+          "taskId": "72b195b4-8302-4176-b69b-718fc4c063a2"
+        }
+      ],
+      "createdAt": "2025-05-14T15:19:32.593Z",
+      "updatedAt": "2025-05-14T15:19:32.593Z",
+      "implementationGuide": "1. Ensure all changes have been committed\n2. Run `git push origin main` to push the changes to the remote repository\n3. Verify that the push was successful by checking the repository on GitHub",
+      "verificationCriteria": "- Changes are successfully pushed to the remote repository\n- No errors occur during the push process\n- Changes are visible in the GitHub repository",
+      "analysisResult": "After analyzing the project architecture and requirements, I've developed a comprehensive plan for documenting and committing architectural decisions for the entire pinecone-mcp-helper project. The project is a pipeline for ingesting content from Git repositories and web links into a Pinecone vector database, with key components including Git repository management, Repomix processing, Firecrawl integration, embedding functionality, and Pinecone integration. Several important architectural decisions have been implemented, including Pinecone serverless architecture with GRPC client, metadata size management, Repomix processor improvements, validation framework, and Firecrawl integration. These decisions should be properly documented through ADRs and organized into logical commits that reflect the overall system architecture."
+    }
+  ]
+}
