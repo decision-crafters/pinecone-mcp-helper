@@ -32,16 +32,18 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
-          bundler-cache: true
+          bundler-cache: false
           
-      - name: Install Jekyll
+      - name: Install dependencies
         run: |
-          gem install jekyll bundler
+          cd docs
+          bundle update
+          bundle install
           
       - name: Build with Jekyll
         run: |
           cd docs
-          jekyll build --destination ../_site
+          bundle exec jekyll build --destination ../_site
         env:
           JEKYLL_ENV: production
           
