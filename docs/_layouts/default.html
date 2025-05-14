@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: "en-US" }}">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+    <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}">
+    {% if site.mermaid.enable %}
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: "default",
+          securityLevel: "loose"
+        });
+        
+        // Dropdown menu functionality
+        var dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(function(dropdown) {
+          dropdown.addEventListener('click', function(event) {
+            if (event.target.classList.contains('dropdown-toggle')) {
+              event.preventDefault();
+              this.querySelector('.dropdown-menu').classList.toggle('show');
+            }
+          });
+        });
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.matches('.dropdown-toggle')) {
+            document.querySelectorAll('.dropdown-menu.show').forEach(function(menu) {
+              menu.classList.remove('show');
+            });
+          }
+        });
+      });
+    </script>
+    {% endif %}
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      <header>
+        <h1><a href="{{ "/" | absolute_url }}">{{ site.title }}</a></h1>
+        <p>{{ site.description }}</p>
+      </header>
+      
+      <div class="navigation">
+        <a href="{{ site.baseurl }}/">Home</a> |
+        {% for chapter_num in (1..9) %}
+          {% capture chapter_path %}{{ chapter_num | prepend: '0' | slice: -2, 2 }}_{% endcapture %}
+          {% for page in site.pages %}
+            {% if page.path contains chapter_path %}
+              <a href="{{ site.baseurl }}{{ page.url }}">Chapter {{ chapter_num }}</a> |
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+        
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle">ADRs ▾</a>
+          <div class="dropdown-menu">
+            <a href="{{ site.baseurl }}/adr/">ADR Index</a>
+            {% assign adrs = site.pages | where_exp: "page", "page.path contains 'adr/' and page.name != 'index.md' and page.name != 'README.md' and page.name != 'template.md'" | sort: "name" %}
+            {% for adr in adrs %}
+              <a href="{{ site.baseurl }}{{ adr.url }}">{{ adr.name | replace: ".md", "" }}</a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      
+      <div class="adr-banner">
+        <p>📝 <strong>Architecture Decision Records (ADRs)</strong> document important architectural decisions in this project. <a href="{{ site.baseurl }}/adr/">View all ADRs</a></p>
+      </div>
+      
+      <main>
+        {{ content }}
+      </main>
+      
+      <footer>
+        <hr>
+        <p>&copy; {{ site.time | date: '%Y' }} Decision Crafters. Powered by <a href="https://pages.github.com/">GitHub Pages</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

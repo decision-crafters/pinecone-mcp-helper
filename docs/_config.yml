@@ -1,0 +1,31 @@
+title: Pinecone MCP Helper
+description: An intelligent repository ingestion pipeline that transforms code and web content into searchable vector databases
+theme: jekyll-theme-cayman
+
+# GitHub Pages settings
+baseurl: "/pinecone-mcp-helper"
+url: "https://decision-crafters.github.io"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# Navigation
+header_pages:
+  - index.md
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+
+# Enable Mermaid diagrams
+mermaid:
+  enable: true
+
+# Collections
+collections:
+  adr:
+    output: true
+    permalink: /adr/:name/
