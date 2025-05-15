@@ -1,6 +1,13 @@
-# Chapter 2: Pipeline Integration
+---
+layout: default
+title: Pipeline Integration
+nav_order: 3
+permalink: /pipeline/
+---
 
-In the [previous chapter about the Command Line Interface](01_command_line_interface.md), we learned how to interact with our tool using simple commands. Now, let's dive into the heart of our system: the Pipeline Integration.
+# Pipeline Integration
+
+In the [previous chapter about the Command Line Interface](/cli/), we learned how to interact with our tool using simple commands. Now, let's dive into the heart of our system: the Pipeline Integration.
 
 ## The Pipeline: Your Content Processing Maestro 🎼
 

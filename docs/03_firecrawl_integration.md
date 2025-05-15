@@ -1,6 +1,13 @@
-# Chapter 3: Firecrawl Integration
+---
+layout: default
+title: Firecrawl Integration
+nav_order: 4
+permalink: /firecrawl/
+---
 
-In the [previous chapter about Pipeline Integration](02_pipeline_integration.md), we learned how to process repository content systematically. Now, let's explore an exciting capability that transforms our tool from a simple repository processor into an intelligent web researcher: Firecrawl Integration!
+# Firecrawl Integration
+
+In the [previous chapter about Pipeline Integration](/pipeline/), we learned how to process repository content systematically. Now, let's explore an exciting capability that transforms our tool from a simple repository processor into an intelligent web researcher: Firecrawl Integration!
 
 ## The Web Research Challenge 🕵️‍♀️
 

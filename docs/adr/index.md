@@ -1,3 +1,11 @@
+---
+layout: default
+title: Architecture Decision Records
+nav_order: 12
+has_children: true
+permalink: /adr/
+---
+
 # Architecture Decision Records
 
 This section contains the Architecture Decision Records (ADRs) for the Pinecone MCP Helper project. ADRs are used to document important architectural decisions, their context, and consequences.

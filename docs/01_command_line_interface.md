@@ -1,4 +1,11 @@
-# Chapter 1: Command Line Interface
+---
+layout: default
+title: Command Line Interface
+nav_order: 2
+permalink: /cli/
+---
+
+# Command Line Interface
 
 Imagine you have a complex machine with many buttons and settings, but you want a simple, intuitive way to control it. That's exactly what a Command Line Interface (CLI) does for our repository ingestion system!
 
