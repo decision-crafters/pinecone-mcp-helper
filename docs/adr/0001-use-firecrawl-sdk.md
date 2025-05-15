@@ -1,3 +1,10 @@
+---
+layout: default
+title: Use Firecrawl SDK Instead of MCP Functions
+parent: Architecture Decision Records
+nav_order: 1
+---
+
 # Use Firecrawl SDK Instead of MCP Functions
 
 ## Status
