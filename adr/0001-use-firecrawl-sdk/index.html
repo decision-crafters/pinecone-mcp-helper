@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Use Firecrawl SDK Instead of MCP Functions | Pinecone MCP Helper</title>
+    <link rel="stylesheet" href="/pinecone-mcp-helper/assets/css/style.css?v=">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    
+    <style>
+      /* Custom styles */
+      .search-container {
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+      }
+      .search-container input {
+        flex-grow: 1;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      .search-container button {
+        margin-left: 8px;
+        padding: 8px 12px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .navigation {
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .navigation a {
+        margin: 0 10px 0 0;
+        padding: 5px 10px;
+        text-decoration: none;
+        color: #0366d6;
+        border-radius: 3px;
+      }
+      .navigation a:hover {
+        background-color: #e9ecef;
+      }
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        border-radius: 4px;
+      }
+      .dropdown-menu a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+      .dropdown-menu a:hover {
+        background-color: #f1f1f1;
+      }
+      .show {
+        display: block;
+      }
+      .adr-banner {
+        background-color: #f0f7ff;
+        border-left: 4px solid #0366d6;
+        padding: 10px 15px;
+        margin: 20px 0;
+        border-radius: 0 4px 4px 0;
+      }
+      .chapter-title {
+        font-weight: bold;
+      }
+      .sidebar {
+        float: right;
+        width: 250px;
+        background-color: #f8f9fa;
+        padding: 15px;
+        margin-left: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+      .sidebar h3 {
+        margin-top: 0;
+      }
+      .sidebar ul {
+        padding-left: 20px;
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          float: none;
+          width: auto;
+          margin-left: 0;
+        }
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: "default",
+          securityLevel: "loose"
+        });
+        
+        
+        // Dropdown menu functionality
+        var dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(function(dropdown) {
+          dropdown.addEventListener('click', function(event) {
+            if (event.target.classList.contains('dropdown-toggle')) {
+              event.preventDefault();
+              this.querySelector('.dropdown-menu').classList.toggle('show');
+            }
+          });
+        });
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.matches('.dropdown-toggle')) {
+            document.querySelectorAll('.dropdown-menu.show').forEach(function(menu) {
+              menu.classList.remove('show');
+            });
+          }
+        });
+        
+        // Search functionality
+        var searchForm = document.getElementById('search-form');
+        if (searchForm) {
+          searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var query = document.getElementById('search-input').value.toLowerCase();
+            window.location.href = '/pinecone-mcp-helper/search.html?q=' + encodeURIComponent(query);
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      <header>
+        <h1><a href="https://decision-crafters.github.io/pinecone-mcp-helper/">Pinecone MCP Helper</a></h1>
+        <p>An intelligent repository ingestion pipeline that transforms code and web content into searchable vector databases</p>
+        
+        <!-- Search form -->
+        <div class="search-container">
+          <form id="search-form">
+            <input type="text" id="search-input" placeholder="Search documentation...">
+            <button type="submit"><i class="fas fa-search"></i></button>
+          </form>
+        </div>
+      </header>
+      
+      <div class="navigation">
+        <a href="/pinecone-mcp-helper/"><i class="fas fa-home"></i> Home</a>
+        
+        
+          
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/cli/"><i class="fas fa-book"></i> Chapter 1</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/pipeline/"><i class="fas fa-book"></i> Chapter 2</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/firecrawl/"><i class="fas fa-book"></i> Chapter 3</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+        
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle">ADRs ▾</a>
+          <div class="dropdown-menu">
+            <a href="/pinecone-mcp-helper/adr/">ADR Index</a>
+            
+            
+              <a href="/pinecone-mcp-helper/adr/0001-use-firecrawl-sdk/">0001-use-firecrawl-sdk</a>
+            
+              <a href="/pinecone-mcp-helper/adr/">index</a>
+            
+          </div>
+        </div>
+      </div>
+      
+      <div class="adr-banner">
+        <p>📝 <strong>Architecture Decision Records (ADRs)</strong> document important architectural decisions in this project. <a href="/pinecone-mcp-helper/adr/">View all ADRs</a></p>
+      </div>
+      
+      <main>
+        
+        
+        <h1 id="use-firecrawl-sdk-instead-of-mcp-functions">Use Firecrawl SDK Instead of MCP Functions</h1>
+
+<h2 id="status">Status</h2>
+<p>Accepted</p>
+
+<h2 id="context">Context</h2>
+<p>The project initially used Model Context Protocol (MCP) functions to interact with the Firecrawl API. However, this approach had several limitations:</p>
+<ul>
+  <li>Limited functionality compared to the official SDK</li>
+  <li>Inconsistent response handling</li>
+  <li>Lack of proper error handling and debugging capabilities</li>
+  <li>Difficulty in maintaining and updating as the Firecrawl API evolves</li>
+</ul>
+
+<p>The team needed a more reliable and maintainable way to integrate with Firecrawl to ensure that web content could be properly searched, scraped, and stored in the Pinecone vector database.</p>
+
+<h2 id="domain-model">Domain Model</h2>
+
+<p>The following diagram illustrates the domain model for the Firecrawl integration, showing the key concepts and their relationships:</p>
+
+<pre><code class="language-mermaid">classDiagram
+    class FirecrawlClient {
+        -api_key: string
+        -client: FirecrawlSDK
+        +search(query, limit, scrapeOptions)
+        +scrape(url, formats, onlyMainContent, waitFor)
+        +deep_research(query, maxDepth, maxUrls, timeLimit)
+    }
+    
+    class SearchResult {
+        +url: string
+        +title: string
+        +description: string
+        +content: string
+        +source_type: string
+    }
+    
+    class ScrapeResult {
+        +url: string
+        +title: string
+        +content: string
+        +formats: List[string]
+        +metadata: Map&lt;string, any&gt;
+    }
+    
+    class DeepResearchResult {
+        +query: string
+        +summary: string
+        +sources: List[Source]
+        +insights: List[string]
+    }
+    
+    class Source {
+        +url: string
+        +title: string
+        +relevance: float
+        +content_snippet: string
+    }
+    
+    class WebContentProcessor {
+        +process_search_results(results)
+        +process_scrape_result(result)
+        +extract_metadata(content)
+    }
+    
+    FirecrawlClient ..&gt; SearchResult: produces
+    FirecrawlClient ..&gt; ScrapeResult: produces
+    FirecrawlClient ..&gt; DeepResearchResult: produces
+    DeepResearchResult *-- Source: contains
+    WebContentProcessor ..&gt; SearchResult: processes
+    WebContentProcessor ..&gt; ScrapeResult: processes
+</code></pre>
+
+<p>This domain model establishes clear boundaries between the client interface, the different types of results, and the processing components. It defines a consistent vocabulary for discussing web content retrieval and processing across the codebase.</p>
+
+<h2 id="decision">Decision</h2>
+<p>We decided to replace the MCP functions with the official Firecrawl Python SDK (version 2.5.4). This involved:</p>
+<ul>
+  <li>Updating the FirecrawlClient class to use the SDK</li>
+  <li>Enhancing error handling and logging</li>
+  <li>Fixing response handling in search and scrape methods</li>
+  <li>Adding validation tools to ensure proper integration</li>
+</ul>
+
+<p>The implementation follows our team’s “Understand the System” principle by ensuring a comprehensive understanding of the Firecrawl API and SDK before making changes. We also adhered to the “Change One Thing at a Time” principle by focusing solely on the Firecrawl integration without modifying other components.</p>
+
+<h2 id="consequences">Consequences</h2>
+<h3 id="positive">Positive</h3>
+<ul>
+  <li>More reliable and consistent interaction with the Firecrawl API</li>
+  <li>Better error handling and debugging capabilities</li>
+  <li>Access to the full range of Firecrawl features</li>
+  <li>Easier maintenance and updates as the SDK evolves</li>
+  <li>Improved code readability and maintainability</li>
+  <li>Real web content is now successfully retrieved and stored in the Pinecone index</li>
+</ul>
+
+<h3 id="negative">Negative</h3>
+<ul>
+  <li>Required changes to existing code and interfaces</li>
+  <li>Added a new dependency to the project</li>
+  <li>May require updates if the SDK API changes in the future</li>
+</ul>
+
+<h2 id="alternatives-considered">Alternatives Considered</h2>
+<ol>
+  <li>
+    <p><strong>Improve the existing MCP functions</strong>: We could have enhanced the existing MCP functions with better error handling and response processing. However, this would still limit us to the functionality exposed by the MCP interface and would require ongoing maintenance to keep up with API changes.</p>
+  </li>
+  <li>
+    <p><strong>Create a custom client</strong>: We could have developed a custom client for the Firecrawl API without using the SDK. This would give us full control over the implementation but would require significant development effort and ongoing maintenance.</p>
+  </li>
+  <li>
+    <p><strong>Use a different web scraping/search solution</strong>: We considered alternative solutions for web scraping and search but determined that Firecrawl’s capabilities best met our requirements for integration with the Pinecone vector database.</p>
+  </li>
+</ol>
+
+      </main>
+      
+      <footer>
+        <hr>
+        <p>&copy; 2025 Decision Crafters. Powered by <a href="https://pages.github.com/">GitHub Pages</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

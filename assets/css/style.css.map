@@ -1,0 +1,14 @@
+{
+	"version": 3,
+	"file": "style.css",
+	"sources": [
+		"style.scss",
+		"_sass/just-the-docs.scss"
+	],
+	"sourcesContent": [
+		"@import \"just-the-docs\";\n\n// Custom styles for Pinecone MCP Helper documentation\n\n// Typography\nbody {\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif;\n  line-height: 1.6;\n}\n\n// Code blocks\npre.highlight {\n  border-radius: 4px;\n}\n\n// Enhance link styles\na {\n  &:hover {\n    text-decoration: underline;\n  }\n}\n\n// Custom callouts\n.callout {\n  padding: 1rem;\n  margin-bottom: 1rem;\n  border-radius: 4px;\n  \n  &.note {\n    background-color: #e6f3ff;\n    border-left: 4px solid #0366d6;\n  }\n  \n  &.warning {\n    background-color: #fff8e6;\n    border-left: 4px solid #f9c513;\n  }\n  \n  &.danger {\n    background-color: #ffebe9;\n    border-left: 4px solid #d73a49;\n  }\n}\n",
+		"// Just the Docs theme placeholder\n"
+	],
+	"names": [],
+	"mappings": "AAKA,AAAA,IAAI,CAAC,EACH,WAAW,EAAE,mFAAmF,EAChG,WAAW,EAAE,GAAG,GACjB;;AAGD,AAAA,GAAG,AAAA,UAAU,CAAC,EACZ,aAAa,EAAE,GAAG,GACnB;;AAGD,AACE,CADD,CACG,KAAK,CAAC,EACN,eAAe,EAAE,SAAS,GAC3B;;AAIH,AAAA,QAAQ,CAAC,EACP,OAAO,EAAE,IAAI,EACb,aAAa,EAAE,IAAI,EACnB,aAAa,EAAE,GAAG,GAgBnB;;AAnBD,AAKE,QALM,AAKL,KAAK,CAAC,EACL,gBAAgB,EAAE,OAAO,EACzB,WAAW,EAAE,iBAAiB,GAC/B;;AARH,AAUE,QAVM,AAUL,QAAQ,CAAC,EACR,gBAAgB,EAAE,OAAO,EACzB,WAAW,EAAE,iBAAiB,GAC/B;;AAbH,AAeE,QAfM,AAeL,OAAO,CAAC,EACP,gBAAgB,EAAE,OAAO,EACzB,WAAW,EAAE,iBAAiB,GAC/B"
+}

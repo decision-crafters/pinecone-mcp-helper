@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Firecrawl Integration | Pinecone MCP Helper</title>
+    <link rel="stylesheet" href="/pinecone-mcp-helper/assets/css/style.css?v=">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    
+    <style>
+      /* Custom styles */
+      .search-container {
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+      }
+      .search-container input {
+        flex-grow: 1;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      .search-container button {
+        margin-left: 8px;
+        padding: 8px 12px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .navigation {
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .navigation a {
+        margin: 0 10px 0 0;
+        padding: 5px 10px;
+        text-decoration: none;
+        color: #0366d6;
+        border-radius: 3px;
+      }
+      .navigation a:hover {
+        background-color: #e9ecef;
+      }
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        border-radius: 4px;
+      }
+      .dropdown-menu a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+      .dropdown-menu a:hover {
+        background-color: #f1f1f1;
+      }
+      .show {
+        display: block;
+      }
+      .adr-banner {
+        background-color: #f0f7ff;
+        border-left: 4px solid #0366d6;
+        padding: 10px 15px;
+        margin: 20px 0;
+        border-radius: 0 4px 4px 0;
+      }
+      .chapter-title {
+        font-weight: bold;
+      }
+      .sidebar {
+        float: right;
+        width: 250px;
+        background-color: #f8f9fa;
+        padding: 15px;
+        margin-left: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+      .sidebar h3 {
+        margin-top: 0;
+      }
+      .sidebar ul {
+        padding-left: 20px;
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          float: none;
+          width: auto;
+          margin-left: 0;
+        }
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: "default",
+          securityLevel: "loose"
+        });
+        
+        
+        // Dropdown menu functionality
+        var dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(function(dropdown) {
+          dropdown.addEventListener('click', function(event) {
+            if (event.target.classList.contains('dropdown-toggle')) {
+              event.preventDefault();
+              this.querySelector('.dropdown-menu').classList.toggle('show');
+            }
+          });
+        });
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.matches('.dropdown-toggle')) {
+            document.querySelectorAll('.dropdown-menu.show').forEach(function(menu) {
+              menu.classList.remove('show');
+            });
+          }
+        });
+        
+        // Search functionality
+        var searchForm = document.getElementById('search-form');
+        if (searchForm) {
+          searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var query = document.getElementById('search-input').value.toLowerCase();
+            window.location.href = '/pinecone-mcp-helper/search.html?q=' + encodeURIComponent(query);
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      <header>
+        <h1><a href="https://decision-crafters.github.io/pinecone-mcp-helper/">Pinecone MCP Helper</a></h1>
+        <p>An intelligent repository ingestion pipeline that transforms code and web content into searchable vector databases</p>
+        
+        <!-- Search form -->
+        <div class="search-container">
+          <form id="search-form">
+            <input type="text" id="search-input" placeholder="Search documentation...">
+            <button type="submit"><i class="fas fa-search"></i></button>
+          </form>
+        </div>
+      </header>
+      
+      <div class="navigation">
+        <a href="/pinecone-mcp-helper/"><i class="fas fa-home"></i> Home</a>
+        
+        
+          
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/cli/"><i class="fas fa-book"></i> Chapter 1</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/pipeline/"><i class="fas fa-book"></i> Chapter 2</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/firecrawl/"><i class="fas fa-book"></i> Chapter 3</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+        
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle">ADRs ▾</a>
+          <div class="dropdown-menu">
+            <a href="/pinecone-mcp-helper/adr/">ADR Index</a>
+            
+            
+              <a href="/pinecone-mcp-helper/adr/0001-use-firecrawl-sdk/">0001-use-firecrawl-sdk</a>
+            
+              <a href="/pinecone-mcp-helper/adr/">index</a>
+            
+          </div>
+        </div>
+      </div>
+      
+      <div class="adr-banner">
+        <p>📝 <strong>Architecture Decision Records (ADRs)</strong> document important architectural decisions in this project. <a href="/pinecone-mcp-helper/adr/">View all ADRs</a></p>
+      </div>
+      
+      <main>
+        
+        
+        <h1 id="firecrawl-integration">Firecrawl Integration</h1>
+
+<p>In the <a href="/pipeline/">previous chapter about Pipeline Integration</a>, we learned how to process repository content systematically. Now, let’s explore an exciting capability that transforms our tool from a simple repository processor into an intelligent web researcher: Firecrawl Integration!</p>
+
+<h2 id="the-web-research-challenge-️️">The Web Research Challenge 🕵️‍♀️</h2>
+
+<p>Imagine you’re a developer working on a machine learning project. You have a repository with some initial code, but you want to enrich your research with real-world web content. How do you automatically gather relevant information without manually browsing the internet?</p>
+
+<p>Enter Firecrawl Integration: your automated web research assistant! 🚀</p>
+
+<h2 id="what-is-firecrawl-integration">What is Firecrawl Integration?</h2>
+
+<p>Firecrawl is like having a super-smart research intern who can:</p>
+<ul>
+  <li>Search the web based on your project’s context</li>
+  <li>Extract meaningful content from websites</li>
+  <li>Provide deep, contextual information</li>
+  <li>Transform unstructured web data into structured knowledge</li>
+</ul>
+
+<h3 id="key-capabilities">Key Capabilities</h3>
+
+<ol>
+  <li><strong>Web Search</strong>: Find relevant web content automatically</li>
+  <li><strong>Content Extraction</strong>: Pull meaningful text from websites</li>
+  <li><strong>Deep Research</strong>: Generate comprehensive insights</li>
+  <li><strong>Metadata Enrichment</strong>: Add context to your research</li>
+</ol>
+
+<h2 id="solving-a-real-world-problem-research-automation">Solving a Real-World Problem: Research Automation</h2>
+
+<p>Let’s walk through a concrete example. Suppose you’re developing a machine learning library about natural language processing (NLP). You want to automatically gather the latest research and best practices.</p>
+
+<h3 id="the-magic-of-automatic-web-research">The Magic of Automatic Web Research</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Import the required modules
+</span><span class="kn">from</span> <span class="n">repo_ingestion.firecrawl.crawler</span> <span class="kn">import</span> <span class="n">init_firecrawl</span>
+<span class="kn">from</span> <span class="n">repo_ingestion.firecrawl.search</span> <span class="kn">import</span> <span class="n">search_web_content</span>
+
+<span class="c1"># Initialize the Firecrawl client with your API key
+</span><span class="n">firecrawl_client</span> <span class="o">=</span> <span class="nf">init_firecrawl</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="sh">"</span><span class="s">YOUR_FIRECRAWL_API_KEY</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Automatically research NLP topics
+</span><span class="n">research_results</span> <span class="o">=</span> <span class="nf">search_web_content</span><span class="p">(</span>
+    <span class="n">firecrawl_client</span><span class="o">=</span><span class="n">firecrawl_client</span><span class="p">,</span>
+    <span class="n">query</span><span class="o">=</span><span class="sh">"</span><span class="s">latest NLP techniques</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>  <span class="c1"># Get top 5 results
+</span>    <span class="n">scrape_results</span><span class="o">=</span><span class="bp">True</span>  <span class="c1"># Extract content from search results
+</span><span class="p">)</span>
+
+<span class="c1"># Now you have curated web content!
+</span><span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">research_results</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Title: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="sh">'</span><span class="s">title</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">URL: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="sh">'</span><span class="s">url</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Content snippet: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="sh">'</span><span class="s">content</span><span class="sh">'</span><span class="p">][</span><span class="si">:</span><span class="mi">100</span><span class="p">]</span><span class="si">}</span><span class="s">...</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: The above example shows the proper initialization and usage of the Firecrawl client. The actual implementation includes robust error handling and fallback mechanisms.</p>
+</blockquote>
+
+<p>When you run this code, Firecrawl does the heavy lifting:</p>
+<ul>
+  <li>Searches the web for NLP content</li>
+  <li>Extracts meaningful text</li>
+  <li>Provides structured results</li>
+</ul>
+
+<h2 id="how-firecrawl-works-behind-the-scenes">How Firecrawl Works: Behind the Scenes</h2>
+
+<p>Let’s peek into the magical process with a sequence diagram:</p>
+
+<pre><code class="language-mermaid">sequenceDiagram
+    participant User
+    participant SearchFunction as search_web_content
+    participant FirecrawlClient
+    participant FirecrawlSDK as Firecrawl SDK
+    participant MockImplementation as Mock Implementation
+    participant Result
+
+    User-&gt;&gt;SearchFunction: Query, limit, client
+    SearchFunction-&gt;&gt;SearchFunction: Check environment &amp; parameters
+    
+    alt Firecrawl SDK Available
+        SearchFunction-&gt;&gt;FirecrawlClient: Forward search request
+        FirecrawlClient-&gt;&gt;FirecrawlSDK: Execute search
+        FirecrawlSDK--&gt;&gt;FirecrawlClient: Return search results
+        FirecrawlClient--&gt;&gt;SearchFunction: Formatted results
+    else SDK Unavailable or Error
+        SearchFunction-&gt;&gt;MockImplementation: Generate mock results
+        MockImplementation--&gt;&gt;SearchFunction: Return mock data
+    end
+    
+    SearchFunction-&gt;&gt;SearchFunction: Process &amp; structure results
+    SearchFunction--&gt;&gt;User: Return final results
+</code></pre>
+
+<blockquote>
+  <p><strong>Note</strong>: This diagram shows the actual flow including fallback mechanisms and error handling, which are critical parts of our robust implementation.</p>
+</blockquote>
+
+<h2 id="deep-dive-code-implementation">Deep Dive: Code Implementation</h2>
+
+<p>Let’s explore the core implementation in <a href="https://github.com/decision-crafters/pinecone-mcp-helper/blob/main/repo_ingestion/firecrawl/search.py"><code class="language-plaintext highlighter-rouge">repo_ingestion/firecrawl/search.py</code></a> and <a href="https://github.com/decision-crafters/pinecone-mcp-helper/blob/main/repo_ingestion/firecrawl/crawler.py"><code class="language-plaintext highlighter-rouge">repo_ingestion/firecrawl/crawler.py</code></a>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Actual implementation in repo_ingestion/firecrawl/search.py
+</span><span class="k">def</span> <span class="nf">search_web_content</span><span class="p">(</span>
+    <span class="n">firecrawl_client</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">scrape_results</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="n">mock_mode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+    <span class="sh">"""</span><span class="s">Search for web content related to a query using Firecrawl.
+    Falls back to a mock implementation if Firecrawl search is not available.
+    </span><span class="sh">"""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">logger</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Searching for web content with query: </span><span class="sh">'</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="sh">'"</span><span class="p">)</span>
+        
+        <span class="c1"># If in mock mode, skip trying real implementation
+</span>        <span class="k">if</span> <span class="n">mock_mode</span><span class="p">:</span>
+            <span class="n">logger</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="sh">"</span><span class="s">Mock mode enabled, skipping real Firecrawl search implementation</span><span class="sh">"</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="nc">ImportError</span><span class="p">(</span><span class="sh">"</span><span class="s">Mock mode enabled</span><span class="sh">"</span><span class="p">)</span>
+        
+        <span class="c1"># Check if Firecrawl API key is available
+</span>        <span class="kn">import</span> <span class="n">os</span>
+        <span class="n">firecrawl_api_key</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">FIRECRAWL_API_KEY</span><span class="sh">'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">firecrawl_api_key</span><span class="p">:</span>
+            <span class="n">logger</span><span class="p">.</span><span class="nf">warning</span><span class="p">(</span><span class="sh">"</span><span class="s">FIRECRAWL_API_KEY not found in environment variables</span><span class="sh">"</span><span class="p">)</span>
+            <span class="n">logger</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="sh">"</span><span class="s">Falling back to mock implementation due to missing API key</span><span class="sh">"</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="nc">ImportError</span><span class="p">(</span><span class="sh">"</span><span class="s">FIRECRAWL_API_KEY not available</span><span class="sh">"</span><span class="p">)</span>
+        
+        <span class="c1"># Set up scrape options if needed
+</span>        <span class="n">scrape_options</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="sh">"</span><span class="s">formats</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">markdown</span><span class="sh">"</span><span class="p">],</span>
+            <span class="sh">"</span><span class="s">onlyMainContent</span><span class="sh">"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="sh">"</span><span class="s">waitFor</span><span class="sh">"</span><span class="p">:</span> <span class="mi">1000</span>  <span class="c1"># Wait 1 second for dynamic content
+</span>        <span class="p">}</span> <span class="k">if</span> <span class="n">scrape_results</span> <span class="k">else</span> <span class="bp">None</span>
+        
+        <span class="c1"># Use FirecrawlClient instance or other compatible client
+</span>        <span class="kn">from</span> <span class="n">repo_ingestion.firecrawl.crawler</span> <span class="kn">import</span> <span class="n">FirecrawlClient</span>
+        
+        <span class="k">if</span> <span class="nf">isinstance</span><span class="p">(</span><span class="n">firecrawl_client</span><span class="p">,</span> <span class="n">FirecrawlClient</span><span class="p">):</span>
+            <span class="n">search_results</span> <span class="o">=</span> <span class="n">firecrawl_client</span><span class="p">.</span><span class="nf">search</span><span class="p">(</span>
+                <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
+                <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span>
+                <span class="n">scrapeOptions</span><span class="o">=</span><span class="n">scrape_options</span>
+            <span class="p">)</span>
+            
+            <span class="c1"># Process search results
+</span>            <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">search_results</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">"</span><span class="s">results</span><span class="sh">"</span><span class="p">,</span> <span class="p">[]):</span>
+                <span class="n">results</span><span class="p">.</span><span class="nf">append</span><span class="p">({</span>
+                    <span class="sh">"</span><span class="s">url</span><span class="sh">"</span><span class="p">:</span> <span class="n">result</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">"</span><span class="s">url</span><span class="sh">"</span><span class="p">,</span> <span class="sh">""</span><span class="p">),</span>
+                    <span class="sh">"</span><span class="s">title</span><span class="sh">"</span><span class="p">:</span> <span class="n">result</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">"</span><span class="s">title</span><span class="sh">"</span><span class="p">,</span> <span class="sh">""</span><span class="p">),</span>
+                    <span class="sh">"</span><span class="s">content</span><span class="sh">"</span><span class="p">:</span> <span class="n">result</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">"</span><span class="s">content</span><span class="sh">"</span><span class="p">,</span> <span class="p">{}).</span><span class="nf">get</span><span class="p">(</span><span class="sh">"</span><span class="s">markdown</span><span class="sh">"</span><span class="p">,</span> <span class="sh">""</span><span class="p">),</span>
+                    <span class="sh">"</span><span class="s">source_type</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">web_search</span><span class="sh">"</span><span class="p">,</span>
+                    <span class="sh">"</span><span class="s">metadata</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="sh">"</span><span class="s">api_used</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">firecrawl</span><span class="sh">"</span><span class="p">,</span>
+                        <span class="sh">"</span><span class="s">query</span><span class="sh">"</span><span class="p">:</span> <span class="n">query</span>
+                    <span class="p">}</span>
+                <span class="p">})</span>
+            
+            <span class="k">return</span> <span class="n">results</span>
+            
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1"># Fall back to mock implementation
+</span>        <span class="n">logger</span><span class="p">.</span><span class="nf">warning</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Error during Firecrawl search: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        <span class="n">logger</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="sh">"</span><span class="s">Falling back to mock implementation</span><span class="sh">"</span><span class="p">)</span>
+        
+        <span class="c1"># Create mock search results based on the query
+</span>        <span class="n">mock_results</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="c1"># Mock result generation code omitted for brevity
+</span>        <span class="p">]</span>
+        
+        <span class="k">return</span> <span class="n">mock_results</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: The actual implementation is more complex with additional error handling, multiple client type support, and a robust mock implementation for testing. This example has been simplified while preserving the key architectural patterns.</p>
+</blockquote>
+
+<p>This function:</p>
+<ul>
+  <li>Initializes a Firecrawl client</li>
+  <li>Searches the web</li>
+  <li>Structures the results</li>
+  <li>Handles potential errors gracefully</li>
+</ul>
+
+<h2 id="advanced-features-deep-research">Advanced Features: Deep Research</h2>
+
+<p>Beyond simple search, Firecrawl offers deep research capabilities:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Import the deep research function
+</span><span class="kn">from</span> <span class="n">repo_ingestion.firecrawl.crawler</span> <span class="kn">import</span> <span class="n">perform_deep_research</span>
+
+<span class="c1"># Perform deep research on a topic with detailed parameters
+</span><span class="k">async</span> <span class="k">def</span> <span class="nf">research_ml_trends</span><span class="p">():</span>
+    <span class="n">deep_research_results</span> <span class="o">=</span> <span class="k">await</span> <span class="nf">perform_deep_research</span><span class="p">(</span>
+        <span class="n">topics</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">machine learning trends</span><span class="sh">"</span><span class="p">],</span>
+        <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>  <span class="c1"># How deep to explore related topics
+</span>        <span class="n">max_urls</span><span class="o">=</span><span class="mi">10</span>   <span class="c1"># Maximum URLs to analyze per topic
+</span>    <span class="p">)</span>
+    
+    <span class="c1"># Process the comprehensive research results
+</span>    <span class="k">for</span> <span class="n">topic</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">deep_research_results</span><span class="p">.</span><span class="nf">items</span><span class="p">():</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Research on </span><span class="si">{</span><span class="n">topic</span><span class="si">}</span><span class="s">:</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">- </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="sh">'</span><span class="s">title</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">  Source: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="sh">'</span><span class="s">url</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: The <code class="language-plaintext highlighter-rouge">perform_deep_research</code> function is asynchronous, allowing for efficient parallel processing of multiple research topics.</p>
+</blockquote>
+
+<p>This method:</p>
+<ul>
+  <li>Explores multiple web sources</li>
+  <li>Analyzes content at different depths</li>
+  <li>Provides comprehensive insights</li>
+</ul>
+
+<h2 id="practical-use-cases">Practical Use Cases</h2>
+
+<p>Firecrawl Integration is perfect for:</p>
+
+<ul>
+  <li><strong>Academic research automation</strong>: Gather papers and research findings automatically</li>
+  <li><strong>Tech trend tracking</strong>: Stay updated on emerging technologies and industry shifts</li>
+  <li><strong>Competitive intelligence</strong>: Monitor competitors’ products, features, and market positioning</li>
+  <li><strong>Content recommendation systems</strong>: Enhance recommendations with fresh web content</li>
+  <li><strong>Documentation enrichment</strong>: Supplement internal documentation with external references</li>
+  <li><strong>Knowledge base construction</strong>: Build comprehensive knowledge bases from diverse sources</li>
+</ul>
+
+<h3 id="firecrawlclient-class">FirecrawlClient Class</h3>
+
+<p>The core of our implementation is the <code class="language-plaintext highlighter-rouge">FirecrawlClient</code> class, which provides:</p>
+
+<ul>
+  <li><strong>SDK Integration</strong>: Seamless integration with the Firecrawl SDK when available</li>
+  <li><strong>Fallback Mechanisms</strong>: Graceful degradation to mock implementations when needed</li>
+  <li><strong>Error Handling</strong>: Robust error handling for network issues and API failures</li>
+  <li><strong>Flexible Configuration</strong>: Support for various search and scraping options</li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Firecrawl Integration transforms our repository processing tool into an intelligent web research assistant. By automatically searching, extracting, and structuring web content, we can enrich our projects with minimal manual effort.</p>
+
+<p>Ready to see how we process these repositories systematically? Let’s move on to <a href="04_repository_processing.md">Repository Processing</a>!</p>
+
+<h2 id="related-adrs">Related ADRs</h2>
+
+<ul>
+  <li><a href="adr/0001-use-firecrawl-sdk.md">ADR-0001: Use Firecrawl SDK Instead of MCP Functions</a> - This ADR documents the decision to use the Firecrawl SDK instead of MCP functions, explaining the benefits in terms of reliability, maintainability, and error handling. It provides important context for understanding the implementation choices in our Firecrawl integration.</li>
+</ul>
+
+<hr />
+
+<p>Generated by <a href="https://github.com/The-Pocket/Tutorial-Codebase-Knowledge">AI Codebase Knowledge Builder</a></p>
+
+      </main>
+      
+      <footer>
+        <hr>
+        <p>&copy; 2025 Decision Crafters. Powered by <a href="https://pages.github.com/">GitHub Pages</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>
