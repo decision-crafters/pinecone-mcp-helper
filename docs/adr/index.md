@@ -12,7 +12,7 @@ This section contains the Architecture Decision Records (ADRs) for the Pinecone 
 
 ## Available ADRs
 
-{% assign adrs = site.pages | where_exp: "page", "page.path contains 'adr/' and page.name != 'index.md'" | sort: "name" %}
+{% assign adrs = site.pages | where_exp: "item", "item.path contains 'adr/' and item.name != 'index.md'" | sort: "name" %}
 {% for adr in adrs %}
 - [{{ adr.title | default: adr.name | replace: ".md", "" | replace: "-", " " | capitalize }}]({{ site.baseurl }}{{ adr.url }})
 {% endfor %}

@@ -28,50 +28,25 @@ mkdir -p "$VENDOR_DIR"
 
 # Install compatible bundler version
 echo "📦 Installing compatible Bundler..."
-gem install bundler -v 2.4.22 --user-install
+gem install bundler
 
-# Add gem bin directory to PATH
-GEM_BIN_DIR=$(ruby -e 'puts Gem.user_dir')/bin
-export PATH="$GEM_BIN_DIR:$PATH"
-echo "🔄 Added $GEM_BIN_DIR to PATH"
+# Navigate to the docs directory
+cd "$PROJECT_ROOT/docs"
 
-# Navigate to docs directory
-cd docs
+# Install dependencies
+echo "📦 Installing dependencies..."
+bundle config set --local path "$VENDOR_DIR"
+bundle install
 
-# Update Gemfile to use compatible Jekyll version if needed
-if grep -q "github-pages" Gemfile; then
-    echo "⚙️ Updating Gemfile for compatibility..."
-    # Create a backup of the original Gemfile
-    cp Gemfile Gemfile.bak
-    
-    # Replace github-pages with Jekyll
-    sed -i '' 's/gem "github-pages"/gem "jekyll", "~> 3.9.3"/' Gemfile
-    
-    # Add required gems if they don't exist
-    if ! grep -q "webrick" Gemfile; then
-        echo 'gem "webrick", "~> 1.8"' >> Gemfile
-    fi
-    
-    if ! grep -q "kramdown-parser-gfm" Gemfile; then
-        echo 'gem "kramdown-parser-gfm"' >> Gemfile
-    fi
-fi
+# Run Jekyll lint to check for syntax errors
+echo "🔍 Running Jekyll lint to check for syntax errors..."
+bundle exec jekyll build --trace
 
-# Install dependencies locally (no sudo required)
-echo "📦 Installing dependencies locally..."
-bundle _2.4.22_ config set --local path "$VENDOR_DIR"
-bundle _2.4.22_ config set --local without 'production'
-bundle _2.4.22_ install
-
-# Build the site
-echo "🔨 Building the documentation site..."
-bundle _2.4.22_ exec jekyll build --destination ../docs-site
-
-# Serve the site
-echo "🌐 Starting local server..."
+# Build and serve the site
+echo "🔨 Building and serving the documentation site..."
 echo "📝 Documentation will be available at http://localhost:4000"
 echo "🛑 Press Ctrl+C to stop the server"
-bundle _2.4.22_ exec jekyll serve --destination ../docs-site --host 0.0.0.0 --baseurl ''
+bundle exec jekyll serve --livereload --baseurl ''
 
 # This part will only execute if the server is stopped
 echo "✅ Local server stopped"
