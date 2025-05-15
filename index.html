@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home | Pinecone MCP Helper</title>
+    <link rel="stylesheet" href="/pinecone-mcp-helper/assets/css/style.css?v=">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    
+    <style>
+      /* Custom styles */
+      .search-container {
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+      }
+      .search-container input {
+        flex-grow: 1;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      .search-container button {
+        margin-left: 8px;
+        padding: 8px 12px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .navigation {
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .navigation a {
+        margin: 0 10px 0 0;
+        padding: 5px 10px;
+        text-decoration: none;
+        color: #0366d6;
+        border-radius: 3px;
+      }
+      .navigation a:hover {
+        background-color: #e9ecef;
+      }
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        border-radius: 4px;
+      }
+      .dropdown-menu a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+      .dropdown-menu a:hover {
+        background-color: #f1f1f1;
+      }
+      .show {
+        display: block;
+      }
+      .adr-banner {
+        background-color: #f0f7ff;
+        border-left: 4px solid #0366d6;
+        padding: 10px 15px;
+        margin: 20px 0;
+        border-radius: 0 4px 4px 0;
+      }
+      .chapter-title {
+        font-weight: bold;
+      }
+      .sidebar {
+        float: right;
+        width: 250px;
+        background-color: #f8f9fa;
+        padding: 15px;
+        margin-left: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+      .sidebar h3 {
+        margin-top: 0;
+      }
+      .sidebar ul {
+        padding-left: 20px;
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          float: none;
+          width: auto;
+          margin-left: 0;
+        }
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: "default",
+          securityLevel: "loose"
+        });
+        
+        
+        // Dropdown menu functionality
+        var dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(function(dropdown) {
+          dropdown.addEventListener('click', function(event) {
+            if (event.target.classList.contains('dropdown-toggle')) {
+              event.preventDefault();
+              this.querySelector('.dropdown-menu').classList.toggle('show');
+            }
+          });
+        });
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.matches('.dropdown-toggle')) {
+            document.querySelectorAll('.dropdown-menu.show').forEach(function(menu) {
+              menu.classList.remove('show');
+            });
+          }
+        });
+        
+        // Search functionality
+        var searchForm = document.getElementById('search-form');
+        if (searchForm) {
+          searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var query = document.getElementById('search-input').value.toLowerCase();
+            window.location.href = '/pinecone-mcp-helper/search.html?q=' + encodeURIComponent(query);
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      <header>
+        <h1><a href="https://decision-crafters.github.io/pinecone-mcp-helper/">Pinecone MCP Helper</a></h1>
+        <p>An intelligent repository ingestion pipeline that transforms code and web content into searchable vector databases</p>
+        
+        <!-- Search form -->
+        <div class="search-container">
+          <form id="search-form">
+            <input type="text" id="search-input" placeholder="Search documentation...">
+            <button type="submit"><i class="fas fa-search"></i></button>
+          </form>
+        </div>
+      </header>
+      
+      <div class="navigation">
+        <a href="/pinecone-mcp-helper/"><i class="fas fa-home"></i> Home</a>
+        
+        
+          
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/cli/"><i class="fas fa-book"></i> Chapter 1</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/pipeline/"><i class="fas fa-book"></i> Chapter 2</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/firecrawl/"><i class="fas fa-book"></i> Chapter 3</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+        
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle">ADRs ▾</a>
+          <div class="dropdown-menu">
+            <a href="/pinecone-mcp-helper/adr/">ADR Index</a>
+            
+            
+              <a href="/pinecone-mcp-helper/adr/0001-use-firecrawl-sdk/">0001-use-firecrawl-sdk</a>
+            
+              <a href="/pinecone-mcp-helper/adr/">index</a>
+            
+          </div>
+        </div>
+      </div>
+      
+      <div class="adr-banner">
+        <p>📝 <strong>Architecture Decision Records (ADRs)</strong> document important architectural decisions in this project. <a href="/pinecone-mcp-helper/adr/">View all ADRs</a></p>
+      </div>
+      
+      <main>
+        
+          <!-- Sidebar for table of contents on specific pages -->
+          <div class="sidebar">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="/pinecone-mcp-helper/">Documentation Home</a></li>
+              <li><a href="/pinecone-mcp-helper/10_real_world_examples.html">Real-World Examples</a></li>
+              <li><a href="/pinecone-mcp-helper/adr/">Architecture Decisions</a></li>
+            </ul>
+            
+            
+          </div>
+        
+        
+        <h1 class="fs-9" id="pinecone-mcp-helper">Pinecone MCP Helper</h1>
+
+<p class="fs-6 fw-300">An intelligent repository ingestion pipeline that transforms code and web content into searchable vector databases.</p>
+
+<p><a href="#getting-started" class="btn btn-primary fs-5 mb-4 mb-md-0 mr-2">Get started now</a>
+<a href="https://github.com/decision-crafters/pinecone-mcp-helper" class="btn fs-5 mb-4 mb-md-0">View it on GitHub</a></p>
+
+<hr />
+
+<h2 id="overview">Overview</h2>
+
+<p><strong>Pinecone MCP Helper</strong> is an intelligent repository ingestion pipeline that transforms code and web content into searchable vector databases. It automates the process of extracting, embedding, and indexing content from Git repositories and web sources, enabling powerful semantic search and research capabilities using Pinecone’s vector database technology.</p>
+
+<p><strong>Source Repository:</strong> <a href="https://github.com/decision-crafters/pinecone-mcp-helper.git">https://github.com/decision-crafters/pinecone-mcp-helper.git</a></p>
+
+<pre><code class="language-mermaid">flowchart TD
+    A0["Pipeline Integration"]
+    A1["Configuration Management"]
+    A2["Embedding Transformation"]
+    A3["Pinecone Vector Management"]
+    A4["Firecrawl Integration"]
+    A5["Repository Processing"]
+    A6["Validation and Quality Assurance"]
+    A7["Logging and Error Handling"]
+    A8["Command Line Interface"]
+    A0 -- "Loads settings" --&gt; A1
+    A0 -- "Transforms content" --&gt; A2
+    A0 -- "Manages indexing" --&gt; A3
+    A0 -- "Extracts web content" --&gt; A4
+    A0 -- "Clones and processes" --&gt; A5
+    A2 -- "Creates vectors" --&gt; A3
+    A4 -- "Generates embeddings" --&gt; A2
+    A0 -- "Validates ingestion" --&gt; A6
+    A0 -- "Tracks operations" --&gt; A7
+    A8 -- "Triggers pipeline" --&gt; A0
+</code></pre>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<p>To get started with Pinecone MCP Helper, follow these steps:</p>
+
+<ol>
+  <li>Install the package</li>
+  <li>Configure your Pinecone API key</li>
+  <li>Run your first ingestion pipeline</li>
+</ol>
+
+<h2 id="documentation-sections">Documentation Sections</h2>
+
+<p>Browse through our documentation to learn more about specific features and capabilities:</p>
+
+<ol>
+  <li><a href="01_command_line_interface.html">Command Line Interface</a></li>
+  <li><a href="02_pipeline_integration.html">Pipeline Integration</a></li>
+  <li><a href="03_firecrawl_integration.html">Firecrawl Integration</a></li>
+  <li><a href="04_repository_processing.html">Repository Processing</a></li>
+  <li><a href="05_embedding_transformation.html">Embedding Transformation</a></li>
+  <li><a href="06_pinecone_vector_management.html">Pinecone Vector Management</a></li>
+  <li><a href="07_configuration_management.html">Configuration Management</a></li>
+  <li><a href="08_validation_and_quality_assurance.html">Validation and Quality Assurance</a></li>
+  <li><a href="09_logging_and_error_handling.html">Logging and Error Handling</a></li>
+  <li><a href="10_real_world_examples.html">Real-World Examples</a></li>
+</ol>
+
+<hr />
+
+<p>Generated by <a href="https://github.com/The-Pocket/Tutorial-Codebase-Knowledge">AI Codebase Knowledge Builder</a></p>
+
+
+      </main>
+      
+      <footer>
+        <hr>
+        <p>&copy; 2025 Decision Crafters. Powered by <a href="https://pages.github.com/">GitHub Pages</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

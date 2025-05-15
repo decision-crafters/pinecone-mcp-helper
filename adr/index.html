@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Architecture Decision Records | Pinecone MCP Helper</title>
+    <link rel="stylesheet" href="/pinecone-mcp-helper/assets/css/style.css?v=">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    
+    <style>
+      /* Custom styles */
+      .search-container {
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+      }
+      .search-container input {
+        flex-grow: 1;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      .search-container button {
+        margin-left: 8px;
+        padding: 8px 12px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .navigation {
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .navigation a {
+        margin: 0 10px 0 0;
+        padding: 5px 10px;
+        text-decoration: none;
+        color: #0366d6;
+        border-radius: 3px;
+      }
+      .navigation a:hover {
+        background-color: #e9ecef;
+      }
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        border-radius: 4px;
+      }
+      .dropdown-menu a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+      .dropdown-menu a:hover {
+        background-color: #f1f1f1;
+      }
+      .show {
+        display: block;
+      }
+      .adr-banner {
+        background-color: #f0f7ff;
+        border-left: 4px solid #0366d6;
+        padding: 10px 15px;
+        margin: 20px 0;
+        border-radius: 0 4px 4px 0;
+      }
+      .chapter-title {
+        font-weight: bold;
+      }
+      .sidebar {
+        float: right;
+        width: 250px;
+        background-color: #f8f9fa;
+        padding: 15px;
+        margin-left: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+      .sidebar h3 {
+        margin-top: 0;
+      }
+      .sidebar ul {
+        padding-left: 20px;
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          float: none;
+          width: auto;
+          margin-left: 0;
+        }
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: "default",
+          securityLevel: "loose"
+        });
+        
+        
+        // Dropdown menu functionality
+        var dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(function(dropdown) {
+          dropdown.addEventListener('click', function(event) {
+            if (event.target.classList.contains('dropdown-toggle')) {
+              event.preventDefault();
+              this.querySelector('.dropdown-menu').classList.toggle('show');
+            }
+          });
+        });
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.matches('.dropdown-toggle')) {
+            document.querySelectorAll('.dropdown-menu.show').forEach(function(menu) {
+              menu.classList.remove('show');
+            });
+          }
+        });
+        
+        // Search functionality
+        var searchForm = document.getElementById('search-form');
+        if (searchForm) {
+          searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var query = document.getElementById('search-input').value.toLowerCase();
+            window.location.href = '/pinecone-mcp-helper/search.html?q=' + encodeURIComponent(query);
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      <header>
+        <h1><a href="https://decision-crafters.github.io/pinecone-mcp-helper/">Pinecone MCP Helper</a></h1>
+        <p>An intelligent repository ingestion pipeline that transforms code and web content into searchable vector databases</p>
+        
+        <!-- Search form -->
+        <div class="search-container">
+          <form id="search-form">
+            <input type="text" id="search-input" placeholder="Search documentation...">
+            <button type="submit"><i class="fas fa-search"></i></button>
+          </form>
+        </div>
+      </header>
+      
+      <div class="navigation">
+        <a href="/pinecone-mcp-helper/"><i class="fas fa-home"></i> Home</a>
+        
+        
+          
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/cli/"><i class="fas fa-book"></i> Chapter 1</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/pipeline/"><i class="fas fa-book"></i> Chapter 2</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/firecrawl/"><i class="fas fa-book"></i> Chapter 3</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+        
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle">ADRs ▾</a>
+          <div class="dropdown-menu">
+            <a href="/pinecone-mcp-helper/adr/">ADR Index</a>
+            
+            
+              <a href="/pinecone-mcp-helper/adr/0001-use-firecrawl-sdk/">0001-use-firecrawl-sdk</a>
+            
+              <a href="/pinecone-mcp-helper/adr/">index</a>
+            
+          </div>
+        </div>
+      </div>
+      
+      <div class="adr-banner">
+        <p>📝 <strong>Architecture Decision Records (ADRs)</strong> document important architectural decisions in this project. <a href="/pinecone-mcp-helper/adr/">View all ADRs</a></p>
+      </div>
+      
+      <main>
+        
+          <!-- Sidebar for table of contents on specific pages -->
+          <div class="sidebar">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="/pinecone-mcp-helper/">Documentation Home</a></li>
+              <li><a href="/pinecone-mcp-helper/10_real_world_examples.html">Real-World Examples</a></li>
+              <li><a href="/pinecone-mcp-helper/adr/">Architecture Decisions</a></li>
+            </ul>
+            
+            
+          </div>
+        
+        
+        <h1 id="architecture-decision-records">Architecture Decision Records</h1>
+
+<p>This section contains the Architecture Decision Records (ADRs) for the Pinecone MCP Helper project. ADRs are used to document important architectural decisions, their context, and consequences.</p>
+
+<h2 id="available-adrs">Available ADRs</h2>
+
+<ul>
+  <li><a href="/pinecone-mcp-helper/adr/0001-use-firecrawl-sdk/">Use firecrawl sdk instead of mcp functions</a></li>
+</ul>
+
+<h2 id="what-is-an-adr">What is an ADR?</h2>
+
+<p>An Architecture Decision Record (ADR) is a document that captures an important architectural decision made along with its context and consequences. ADRs are a lightweight way to document the key decisions that impact the architecture of a system.</p>
+
+<p>Each ADR includes:</p>
+
+<ol>
+  <li><strong>Title</strong>: A descriptive title that summarizes the decision</li>
+  <li><strong>Status</strong>: Proposed, Accepted, Deprecated, or Superseded</li>
+  <li><strong>Context</strong>: The forces at play, including technological, business, and team constraints</li>
+  <li><strong>Decision</strong>: The response to these forces, clearly stating the direction taken</li>
+  <li><strong>Consequences</strong>: The resulting context after applying the decision, including trade-offs and impacts</li>
+  <li><strong>References</strong>: Any relevant supporting information or external resources</li>
+</ol>
+
+      </main>
+      
+      <footer>
+        <hr>
+        <p>&copy; 2025 Decision Crafters. Powered by <a href="https://pages.github.com/">GitHub Pages</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pipeline Integration | Pinecone MCP Helper</title>
+    <link rel="stylesheet" href="/pinecone-mcp-helper/assets/css/style.css?v=">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    
+    <style>
+      /* Custom styles */
+      .search-container {
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+      }
+      .search-container input {
+        flex-grow: 1;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      .search-container button {
+        margin-left: 8px;
+        padding: 8px 12px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .navigation {
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .navigation a {
+        margin: 0 10px 0 0;
+        padding: 5px 10px;
+        text-decoration: none;
+        color: #0366d6;
+        border-radius: 3px;
+      }
+      .navigation a:hover {
+        background-color: #e9ecef;
+      }
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        border-radius: 4px;
+      }
+      .dropdown-menu a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+      .dropdown-menu a:hover {
+        background-color: #f1f1f1;
+      }
+      .show {
+        display: block;
+      }
+      .adr-banner {
+        background-color: #f0f7ff;
+        border-left: 4px solid #0366d6;
+        padding: 10px 15px;
+        margin: 20px 0;
+        border-radius: 0 4px 4px 0;
+      }
+      .chapter-title {
+        font-weight: bold;
+      }
+      .sidebar {
+        float: right;
+        width: 250px;
+        background-color: #f8f9fa;
+        padding: 15px;
+        margin-left: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+      .sidebar h3 {
+        margin-top: 0;
+      }
+      .sidebar ul {
+        padding-left: 20px;
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          float: none;
+          width: auto;
+          margin-left: 0;
+        }
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: "default",
+          securityLevel: "loose"
+        });
+        
+        
+        // Dropdown menu functionality
+        var dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(function(dropdown) {
+          dropdown.addEventListener('click', function(event) {
+            if (event.target.classList.contains('dropdown-toggle')) {
+              event.preventDefault();
+              this.querySelector('.dropdown-menu').classList.toggle('show');
+            }
+          });
+        });
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.matches('.dropdown-toggle')) {
+            document.querySelectorAll('.dropdown-menu.show').forEach(function(menu) {
+              menu.classList.remove('show');
+            });
+          }
+        });
+        
+        // Search functionality
+        var searchForm = document.getElementById('search-form');
+        if (searchForm) {
+          searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var query = document.getElementById('search-input').value.toLowerCase();
+            window.location.href = '/pinecone-mcp-helper/search.html?q=' + encodeURIComponent(query);
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      <header>
+        <h1><a href="https://decision-crafters.github.io/pinecone-mcp-helper/">Pinecone MCP Helper</a></h1>
+        <p>An intelligent repository ingestion pipeline that transforms code and web content into searchable vector databases</p>
+        
+        <!-- Search form -->
+        <div class="search-container">
+          <form id="search-form">
+            <input type="text" id="search-input" placeholder="Search documentation...">
+            <button type="submit"><i class="fas fa-search"></i></button>
+          </form>
+        </div>
+      </header>
+      
+      <div class="navigation">
+        <a href="/pinecone-mcp-helper/"><i class="fas fa-home"></i> Home</a>
+        
+        
+          
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/cli/"><i class="fas fa-book"></i> Chapter 1</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/pipeline/"><i class="fas fa-book"></i> Chapter 2</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/firecrawl/"><i class="fas fa-book"></i> Chapter 3</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+        
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle">ADRs ▾</a>
+          <div class="dropdown-menu">
+            <a href="/pinecone-mcp-helper/adr/">ADR Index</a>
+            
+            
+              <a href="/pinecone-mcp-helper/adr/0001-use-firecrawl-sdk/">0001-use-firecrawl-sdk</a>
+            
+              <a href="/pinecone-mcp-helper/adr/">index</a>
+            
+          </div>
+        </div>
+      </div>
+      
+      <div class="adr-banner">
+        <p>📝 <strong>Architecture Decision Records (ADRs)</strong> document important architectural decisions in this project. <a href="/pinecone-mcp-helper/adr/">View all ADRs</a></p>
+      </div>
+      
+      <main>
+        
+        
+        <h1 id="pipeline-integration">Pipeline Integration</h1>
+
+<p>In the <a href="/cli/">previous chapter about the Command Line Interface</a>, we learned how to interact with our tool using simple commands. Now, let’s dive into the heart of our system: the Pipeline Integration.</p>
+
+<h2 id="the-pipeline-your-content-processing-maestro-">The Pipeline: Your Content Processing Maestro 🎼</h2>
+
+<p>Imagine you’re a conductor leading an orchestra, but instead of musicians, you have different software components working together to transform raw code into searchable knowledge. That’s exactly what our pipeline does!</p>
+
+<h3 id="what-is-a-pipeline">What is a Pipeline?</h3>
+
+<p>A pipeline is like a sophisticated assembly line for processing repositories. It takes a raw GitHub repository and transforms it through multiple stages:</p>
+
+<ol>
+  <li>Clone the repository</li>
+  <li>Extract content</li>
+  <li>Analyze repository structure</li>
+  <li>Generate embeddings</li>
+  <li>Index in Pinecone</li>
+  <li>Optionally crawl related web content</li>
+</ol>
+
+<h2 id="real-world-scenario-developer-knowledge-base">Real-World Scenario: Developer Knowledge Base</h2>
+
+<p>Let’s consider a practical example. You’re building a knowledge base for a machine learning team, and you want to make all your repositories searchable.</p>
+
+<h3 id="pipeline-workflow">Pipeline Workflow</h3>
+
+<pre><code class="language-mermaid">sequenceDiagram
+    participant Repo as Git Repository
+    participant Clone as Repository Cloner
+    participant Repomix as Content Extractor
+    participant Firecrawl as Web Crawler
+    participant Research as Deep Research
+    participant Embedder as Embedding Generator
+    participant Pinecone as Vector Database
+    participant Validator as Validation
+
+    Repo-&gt;&gt;Clone: Clone repository
+    Clone-&gt;&gt;Repomix: Extract code and documentation
+    Repomix-&gt;&gt;Firecrawl: Extract URLs (optional)
+    Firecrawl-&gt;&gt;Research: Perform deep research (optional)
+    Repomix-&gt;&gt;Embedder: Generate vector embeddings
+    Firecrawl-&gt;&gt;Embedder: Generate vector embeddings
+    Research-&gt;&gt;Embedder: Enrich content
+    Embedder-&gt;&gt;Pinecone: Store searchable vectors
+    Pinecone-&gt;&gt;Validator: Validate ingestion
+</code></pre>
+
+<h2 id="pipeline-implementation-overview">Pipeline Implementation Overview</h2>
+
+<p>Here’s a more comprehensive representation of how our pipeline works:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">run_pipeline</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">env_vars</span><span class="p">):</span>
+    <span class="c1"># Step 1: Clone or update repository
+</span>    <span class="n">repo_url</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="n">repo_url</span>
+    <span class="n">repo_name</span> <span class="o">=</span> <span class="nf">extract_repo_name</span><span class="p">(</span><span class="n">repo_url</span><span class="p">)</span>
+    <span class="n">repo_path</span> <span class="o">=</span> <span class="nf">clone_or_update_repo</span><span class="p">(</span><span class="n">repo_url</span><span class="p">)</span>
+    
+    <span class="c1"># Step 2: Execute Repomix and process output
+</span>    <span class="n">repomix_output_path</span> <span class="o">=</span> <span class="nf">execute_repomix</span><span class="p">(</span><span class="n">repo_path</span><span class="p">)</span>
+    <span class="n">repo_chunks</span> <span class="o">=</span> <span class="nf">parse_repomix_output</span><span class="p">(</span><span class="n">repomix_output_path</span><span class="p">)</span>
+    
+    <span class="c1"># Step 3: Initialize embedding function
+</span>    <span class="n">embedding_function</span> <span class="o">=</span> <span class="nf">get_embedding_function</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">env_vars</span><span class="p">)</span>
+    
+    <span class="c1"># Step 4: Initialize Pinecone client and ensure index exists
+</span>    <span class="n">pinecone_client</span> <span class="o">=</span> <span class="nf">init_pinecone</span><span class="p">(</span><span class="n">env_vars</span><span class="p">[</span><span class="sh">"</span><span class="s">PINECONE_API_KEY</span><span class="sh">"</span><span class="p">],</span> <span class="n">env_vars</span><span class="p">[</span><span class="sh">"</span><span class="s">PINECONE_ENVIRONMENT</span><span class="sh">"</span><span class="p">])</span>
+    <span class="n">index_name</span> <span class="o">=</span> <span class="nf">get_nested_config</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="sh">"</span><span class="s">pinecone.index_name</span><span class="sh">"</span><span class="p">,</span> <span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">repo_name</span><span class="p">.</span><span class="nf">lower</span><span class="p">()</span><span class="si">}</span><span class="s">-repo</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="nf">ensure_index_exists</span><span class="p">(</span><span class="n">pinecone_client</span><span class="p">,</span> <span class="n">index_name</span><span class="p">,</span> <span class="n">embedding_dimension</span><span class="p">,</span> <span class="n">metric</span><span class="p">)</span>
+    
+    <span class="c1"># Step 5: Embed and upsert repository content
+</span>    <span class="n">repo_chunks_with_embeddings</span> <span class="o">=</span> <span class="nf">embed_chunks</span><span class="p">(</span><span class="n">repo_chunks</span><span class="p">,</span> <span class="n">embedding_function</span><span class="p">,</span> <span class="n">embedding_dimension</span><span class="p">)</span>
+    <span class="n">repo_vectors</span> <span class="o">=</span> <span class="nf">prepare_vectors_for_upsert</span><span class="p">(</span><span class="n">repo_chunks_with_embeddings</span><span class="p">)</span>
+    <span class="n">namespace</span> <span class="o">=</span> <span class="nf">get_namespace_for_repo</span><span class="p">(</span><span class="n">repo_name</span><span class="p">)</span>
+    <span class="n">repo_upsert_results</span> <span class="o">=</span> <span class="nf">upsert_vectors</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">repo_vectors</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>
+    
+    <span class="c1"># Steps 6-9: Firecrawl processing (if enabled)
+</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">.</span><span class="n">no_firecrawl</span><span class="p">:</span>
+        <span class="n">firecrawl_client</span> <span class="o">=</span> <span class="nf">init_firecrawl</span><span class="p">(</span><span class="n">env_vars</span><span class="p">[</span><span class="sh">"</span><span class="s">FIRECRAWL_API_KEY</span><span class="sh">"</span><span class="p">])</span>
+        
+        <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="n">search_query</span><span class="p">:</span>
+            <span class="c1"># Use Firecrawl search
+</span>            <span class="n">firecrawl_results</span> <span class="o">=</span> <span class="nf">search_web_content</span><span class="p">(</span><span class="n">firecrawl_client</span><span class="p">,</span> <span class="n">args</span><span class="p">.</span><span class="n">search_query</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Extract and process URLs
+</span>            <span class="n">urls</span> <span class="o">=</span> <span class="nf">extract_urls_from_repomix_output</span><span class="p">(</span><span class="n">repomix_output_path</span><span class="p">)</span>
+            <span class="n">firecrawl_results</span> <span class="o">=</span> <span class="nf">scrape_urls</span><span class="p">(</span><span class="n">firecrawl_client</span><span class="p">,</span> <span class="n">urls</span><span class="p">)</span>
+            
+        <span class="n">firecrawl_chunks</span> <span class="o">=</span> <span class="nf">process_firecrawl_results</span><span class="p">(</span><span class="n">firecrawl_results</span><span class="p">)</span>
+        
+        <span class="c1"># Step 10: Deep research (if enabled)
+</span>        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">.</span><span class="n">no_deep_research</span> <span class="ow">and</span> <span class="n">config</span><span class="p">[</span><span class="sh">"</span><span class="s">firecrawl</span><span class="sh">"</span><span class="p">][</span><span class="sh">"</span><span class="s">deep_research</span><span class="sh">"</span><span class="p">][</span><span class="sh">"</span><span class="s">enabled</span><span class="sh">"</span><span class="p">]:</span>
+            <span class="c1"># Perform deep research and enrich content
+</span>            <span class="n">research_topics</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="n">search_query</span> <span class="ow">or</span> <span class="nf">extract_research_topics</span><span class="p">(</span><span class="n">repo_chunks</span><span class="p">)</span>
+            <span class="n">research_results</span> <span class="o">=</span> <span class="nf">perform_deep_research</span><span class="p">(</span><span class="n">research_topics</span><span class="p">)</span>
+            <span class="n">enriched_chunks</span> <span class="o">=</span> <span class="nf">enrich_content_with_research</span><span class="p">(</span><span class="n">repo_chunks</span><span class="p">,</span> <span class="n">research_results</span><span class="p">)</span>
+            
+            <span class="c1"># Embed and upsert enriched content
+</span>            <span class="n">enriched_chunks_with_embeddings</span> <span class="o">=</span> <span class="nf">embed_chunks</span><span class="p">(</span><span class="n">enriched_chunks</span><span class="p">,</span> <span class="n">embedding_function</span><span class="p">)</span>
+            <span class="n">enriched_vectors</span> <span class="o">=</span> <span class="nf">prepare_vectors_for_upsert</span><span class="p">(</span><span class="n">enriched_chunks_with_embeddings</span><span class="p">)</span>
+            <span class="nf">upsert_vectors</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">enriched_vectors</span><span class="p">,</span> <span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">namespace</span><span class="si">}</span><span class="s">-enriched</span><span class="sh">"</span><span class="p">)</span>
+    
+        <span class="c1"># Step 11: Embed and upsert Firecrawl content
+</span>        <span class="k">if</span> <span class="n">firecrawl_chunks</span><span class="p">:</span>
+            <span class="n">firecrawl_chunks_with_embeddings</span> <span class="o">=</span> <span class="nf">embed_chunks</span><span class="p">(</span><span class="n">firecrawl_chunks</span><span class="p">,</span> <span class="n">embedding_function</span><span class="p">)</span>
+            <span class="n">firecrawl_vectors</span> <span class="o">=</span> <span class="nf">prepare_vectors_for_upsert</span><span class="p">(</span><span class="n">firecrawl_chunks_with_embeddings</span><span class="p">)</span>
+            <span class="n">firecrawl_upsert_results</span> <span class="o">=</span> <span class="nf">upsert_vectors</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">firecrawl_vectors</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>
+    
+    <span class="c1"># Step 12: Validate repository ingestion
+</span>    <span class="n">validation_results</span> <span class="o">=</span> <span class="nf">validate_repository_ingestion</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">namespace</span><span class="p">,</span> <span class="n">repo_path</span><span class="p">,</span> <span class="n">repomix_output_path</span><span class="p">)</span>
+    
+    <span class="c1"># Step 13: Report results
+</span>    <span class="k">return</span> <span class="n">results_summary</span>
+</code></pre></div></div>
+
+<p>This function demonstrates the complete pipeline stages:</p>
+<ul>
+  <li>Clone the repository</li>
+  <li>Extract meaningful content</li>
+  <li>Initialize embedding and Pinecone</li>
+  <li>Process repository content</li>
+  <li>Optionally process web content via Firecrawl</li>
+  <li>Optionally perform deep research</li>
+  <li>Validate the ingestion process</li>
+  <li>Report comprehensive results</li>
+</ul>
+
+<h3 id="key-pipeline-components">Key Pipeline Components</h3>
+
+<ol>
+  <li><strong>Repository Cloning</strong>: Retrieves the latest code or updates local repository</li>
+  <li><strong>Content Extraction</strong>: Uses Repomix to find relevant files and extract meaningful content</li>
+  <li><strong>Web Content Processing</strong>: Optionally extracts URLs and crawls related web content</li>
+  <li><strong>Deep Research</strong>: Optionally performs in-depth research on key topics to enrich content</li>
+  <li><strong>Embedding Generation</strong>: Converts text to vector representations using configurable models</li>
+  <li><strong>Vector Indexing</strong>: Stores vectors in Pinecone for semantic search</li>
+  <li><strong>Validation</strong>: Verifies that ingested content is properly searchable</li>
+  <li><strong>Results Reporting</strong>: Provides comprehensive metrics on the ingestion process</li>
+</ol>
+
+<h2 id="behind-the-scenes-configuration-and-flexibility">Behind the Scenes: Configuration and Flexibility</h2>
+
+<p>The pipeline isn’t just a rigid process. It’s configurable through a YAML file:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">pipeline</span><span class="pi">:</span>
+  <span class="na">max_file_size</span><span class="pi">:</span> <span class="s">100KB</span>
+  <span class="na">excluded_paths</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">*.test.js"</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">node_modules/"</span>
+  <span class="na">embedding_model</span><span class="pi">:</span> <span class="s2">"</span><span class="s">openai/text-embedding-ada-002"</span>
+</code></pre></div></div>
+
+<p>This configuration allows you to:</p>
+<ul>
+  <li>Limit file sizes</li>
+  <li>Exclude unnecessary files</li>
+  <li>Choose embedding models</li>
+</ul>
+
+<h2 id="error-handling-and-logging">Error Handling and Logging</h2>
+
+<p>Our pipeline includes robust error handling:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span><span class="p">:</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="nf">run_pipeline</span><span class="p">(</span><span class="n">repository_url</span><span class="p">)</span>
+    <span class="n">logger</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Successfully processed </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="sh">'</span><span class="s">total_chunks</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="s"> chunks</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">PipelineError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">logger</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Pipeline processing failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="key-takeaways">Key Takeaways</h2>
+
+<ul>
+  <li>Pipelines transform complex processing into simple, manageable steps</li>
+  <li>Each stage of the pipeline has a specific, focused role</li>
+  <li>Configurations provide flexibility without complexity</li>
+</ul>
+
+<h2 id="whats-next">What’s Next?</h2>
+
+<p>Ready to see how we integrate external web crawling? Let’s explore <a href="03_firecrawl_integration.md">Firecrawl Integration</a> in the next chapter!</p>
+
+<h2 id="related-adrs">Related ADRs</h2>
+
+<ul>
+  <li><a href="adr/0001-use-firecrawl-sdk.md">ADR-0001: Use Firecrawl SDK</a> - This ADR documents the decision to use the Firecrawl SDK for web content extraction, which is a key component of our pipeline.</li>
+  <li><a href="adr/0002-pinecone-serverless-architecture.md">ADR-0002: Pinecone Serverless Architecture</a> - This ADR explains the choice of Pinecone’s serverless architecture for vector storage, which impacts how our pipeline interacts with the vector database.</li>
+  <li><a href="adr/0004-repomix-processor-improvements.md">ADR-0004: Repomix Processor Improvements</a> - This ADR details improvements to the Repomix processor, which is central to our content extraction pipeline stage.</li>
+</ul>
+
+<hr />
+
+<p>Generated by <a href="https://github.com/The-Pocket/Tutorial-Codebase-Knowledge">AI Codebase Knowledge Builder</a></p>
+
+      </main>
+      
+      <footer>
+        <hr>
+        <p>&copy; 2025 Decision Crafters. Powered by <a href="https://pages.github.com/">GitHub Pages</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

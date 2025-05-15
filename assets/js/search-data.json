@@ -1,0 +1,310 @@
+{"0": {
+    "doc": "Use Firecrawl SDK Instead of MCP Functions",
+    "title": "Use Firecrawl SDK Instead of MCP Functions",
+    "content": " ",
+    "url": "/pinecone-mcp-helper/adr/0001-use-firecrawl-sdk/",
+    
+    "relUrl": "/adr/0001-use-firecrawl-sdk/"
+  },"1": {
+    "doc": "Use Firecrawl SDK Instead of MCP Functions",
+    "title": "Status",
+    "content": "Accepted . ",
+    "url": "/pinecone-mcp-helper/adr/0001-use-firecrawl-sdk/#status",
+    
+    "relUrl": "/adr/0001-use-firecrawl-sdk/#status"
+  },"2": {
+    "doc": "Use Firecrawl SDK Instead of MCP Functions",
+    "title": "Context",
+    "content": "The project initially used Model Context Protocol (MCP) functions to interact with the Firecrawl API. However, this approach had several limitations: . | Limited functionality compared to the official SDK | Inconsistent response handling | Lack of proper error handling and debugging capabilities | Difficulty in maintaining and updating as the Firecrawl API evolves | . The team needed a more reliable and maintainable way to integrate with Firecrawl to ensure that web content could be properly searched, scraped, and stored in the Pinecone vector database. ",
+    "url": "/pinecone-mcp-helper/adr/0001-use-firecrawl-sdk/#context",
+    
+    "relUrl": "/adr/0001-use-firecrawl-sdk/#context"
+  },"3": {
+    "doc": "Use Firecrawl SDK Instead of MCP Functions",
+    "title": "Domain Model",
+    "content": "The following diagram illustrates the domain model for the Firecrawl integration, showing the key concepts and their relationships: . classDiagram class FirecrawlClient { -api_key: string -client: FirecrawlSDK +search(query, limit, scrapeOptions) +scrape(url, formats, onlyMainContent, waitFor) +deep_research(query, maxDepth, maxUrls, timeLimit) } class SearchResult { +url: string +title: string +description: string +content: string +source_type: string } class ScrapeResult { +url: string +title: string +content: string +formats: List[string] +metadata: Map&lt;string, any&gt; } class DeepResearchResult { +query: string +summary: string +sources: List[Source] +insights: List[string] } class Source { +url: string +title: string +relevance: float +content_snippet: string } class WebContentProcessor { +process_search_results(results) +process_scrape_result(result) +extract_metadata(content) } FirecrawlClient ..&gt; SearchResult: produces FirecrawlClient ..&gt; ScrapeResult: produces FirecrawlClient ..&gt; DeepResearchResult: produces DeepResearchResult *-- Source: contains WebContentProcessor ..&gt; SearchResult: processes WebContentProcessor ..&gt; ScrapeResult: processes . This domain model establishes clear boundaries between the client interface, the different types of results, and the processing components. It defines a consistent vocabulary for discussing web content retrieval and processing across the codebase. ",
+    "url": "/pinecone-mcp-helper/adr/0001-use-firecrawl-sdk/#domain-model",
+    
+    "relUrl": "/adr/0001-use-firecrawl-sdk/#domain-model"
+  },"4": {
+    "doc": "Use Firecrawl SDK Instead of MCP Functions",
+    "title": "Decision",
+    "content": "We decided to replace the MCP functions with the official Firecrawl Python SDK (version 2.5.4). This involved: . | Updating the FirecrawlClient class to use the SDK | Enhancing error handling and logging | Fixing response handling in search and scrape methods | Adding validation tools to ensure proper integration | . The implementation follows our team’s “Understand the System” principle by ensuring a comprehensive understanding of the Firecrawl API and SDK before making changes. We also adhered to the “Change One Thing at a Time” principle by focusing solely on the Firecrawl integration without modifying other components. ",
+    "url": "/pinecone-mcp-helper/adr/0001-use-firecrawl-sdk/#decision",
+    
+    "relUrl": "/adr/0001-use-firecrawl-sdk/#decision"
+  },"5": {
+    "doc": "Use Firecrawl SDK Instead of MCP Functions",
+    "title": "Consequences",
+    "content": "Positive . | More reliable and consistent interaction with the Firecrawl API | Better error handling and debugging capabilities | Access to the full range of Firecrawl features | Easier maintenance and updates as the SDK evolves | Improved code readability and maintainability | Real web content is now successfully retrieved and stored in the Pinecone index | . Negative . | Required changes to existing code and interfaces | Added a new dependency to the project | May require updates if the SDK API changes in the future | . ",
+    "url": "/pinecone-mcp-helper/adr/0001-use-firecrawl-sdk/#consequences",
+    
+    "relUrl": "/adr/0001-use-firecrawl-sdk/#consequences"
+  },"6": {
+    "doc": "Use Firecrawl SDK Instead of MCP Functions",
+    "title": "Alternatives Considered",
+    "content": ". | Improve the existing MCP functions: We could have enhanced the existing MCP functions with better error handling and response processing. However, this would still limit us to the functionality exposed by the MCP interface and would require ongoing maintenance to keep up with API changes. | Create a custom client: We could have developed a custom client for the Firecrawl API without using the SDK. This would give us full control over the implementation but would require significant development effort and ongoing maintenance. | Use a different web scraping/search solution: We considered alternative solutions for web scraping and search but determined that Firecrawl’s capabilities best met our requirements for integration with the Pinecone vector database. | . ",
+    "url": "/pinecone-mcp-helper/adr/0001-use-firecrawl-sdk/#alternatives-considered",
+    
+    "relUrl": "/adr/0001-use-firecrawl-sdk/#alternatives-considered"
+  },"7": {
+    "doc": "Command Line Interface",
+    "title": "Command Line Interface",
+    "content": "Imagine you have a complex machine with many buttons and settings, but you want a simple, intuitive way to control it. That’s exactly what a Command Line Interface (CLI) does for our repository ingestion system! . ",
+    "url": "/pinecone-mcp-helper/cli/",
+    
+    "relUrl": "/cli/"
+  },"8": {
+    "doc": "Command Line Interface",
+    "title": "What is a Command Line Interface?",
+    "content": "A CLI is like a powerful remote control for your software. Instead of clicking through multiple screens, you can type simple commands that tell the program exactly what you want to do. In our pinecone-mcp-helper project, the CLI is your gateway to processing repositories, extracting information, and storing it in Pinecone. ",
+    "url": "/pinecone-mcp-helper/cli/#what-is-a-command-line-interface",
+    
+    "relUrl": "/cli/#what-is-a-command-line-interface"
+  },"9": {
+    "doc": "Command Line Interface",
+    "title": "Why Use a CLI?",
+    "content": "Let’s consider a real-world scenario: You want to take a GitHub repository about machine learning and convert its contents into searchable vector embeddings. Without a CLI, this would be a complicated, multi-step process. With our CLI, it becomes as simple as typing one command! . ",
+    "url": "/pinecone-mcp-helper/cli/#why-use-a-cli",
+    
+    "relUrl": "/cli/#why-use-a-cli"
+  },"10": {
+    "doc": "Command Line Interface",
+    "title": "Basic CLI Usage",
+    "content": "Here’s a simple example of how you might use our CLI: . python main.py https://github.com/username/ml-project --log-level DEBUG --config custom_config.yaml . This command tells our program to: . | Process the repository at the given URL | Set logging to show detailed debug information | Use a custom configuration file | . CLI Arguments Explained . Our CLI supports several helpful arguments: . | repo_url: The main target - your repository’s URL or path to a local Git repository | --config: Custom configuration file (optional, default: config.yaml) | --log-level: Control how much information you see (DEBUG, INFO, WARNING, ERROR, CRITICAL) | --no-firecrawl: Skip web URL extraction and processing | --no-deep-research: Disable deep research on extracted topics | --search-query: Specify a search query for Firecrawl and deep research (overrides automatic topic extraction) | --mock-mode: Test the system without making real API calls | --log-file: Path to a log file (if not provided, logs will only be written to the console) | . ",
+    "url": "/pinecone-mcp-helper/cli/#basic-cli-usage",
+    
+    "relUrl": "/cli/#basic-cli-usage"
+  },"11": {
+    "doc": "Command Line Interface",
+    "title": "How It Works Behind the Scenes",
+    "content": "Let’s peek inside the CLI’s inner workings with a simple sequence diagram: . sequenceDiagram participant User participant CLI participant Config participant Pipeline participant Pinecone User-&gt;&gt;CLI: Provide repository URL CLI-&gt;&gt;Config: Load configuration CLI-&gt;&gt;Pipeline: Start processing Pipeline-&gt;&gt;Pinecone: Store vector embeddings . ",
+    "url": "/pinecone-mcp-helper/cli/#how-it-works-behind-the-scenes",
+    
+    "relUrl": "/cli/#how-it-works-behind-the-scenes"
+  },"12": {
+    "doc": "Command Line Interface",
+    "title": "Code Walkthrough",
+    "content": "The magic happens in our cli.py file. Here’s a simplified view of the argument parsing: . def parse_args(args=None): parser = argparse.ArgumentParser( description=\"Ingest Git repository content and associated web links into a Pinecone vector database.\" ) parser.add_argument( \"repo_url\", help=\"URL of the Git repository to ingest or path to a local Git repository.\" ) parser.add_argument( \"--config\", default=\"config.yaml\", help=\"Path to the YAML configuration file. Default: config.yaml\" ) parser.add_argument( \"--log-level\", default=\"INFO\", choices=[\"DEBUG\", \"INFO\", \"WARNING\", \"ERROR\", \"CRITICAL\"], help=\"Set the logging level. Default: INFO\" ) # More arguments including no-firecrawl, no-deep-research, search-query, mock-mode, and log-file return parser.parse_args(args) . This function creates a parser that understands the commands and options a user might provide. The actual implementation includes additional arguments for controlling Firecrawl integration, deep research, and logging options. ",
+    "url": "/pinecone-mcp-helper/cli/#code-walkthrough",
+    
+    "relUrl": "/cli/#code-walkthrough"
+  },"13": {
+    "doc": "Command Line Interface",
+    "title": "Key Takeaways",
+    "content": ". | CLIs provide a powerful, flexible way to interact with complex systems | Our CLI makes repository processing simple and configurable | You can control the ingestion process with just a few arguments | . ",
+    "url": "/pinecone-mcp-helper/cli/#key-takeaways",
+    
+    "relUrl": "/cli/#key-takeaways"
+  },"14": {
+    "doc": "Command Line Interface",
+    "title": "What’s Next?",
+    "content": "Now that you understand the Command Line Interface, let’s explore how it integrates with our repository processing pipeline in Pipeline Integration. ",
+    "url": "/pinecone-mcp-helper/cli/#whats-next",
+    
+    "relUrl": "/cli/#whats-next"
+  },"15": {
+    "doc": "Command Line Interface",
+    "title": "Related ADRs",
+    "content": ". | ADR-0001: Use Firecrawl SDK - This ADR explains the decision to use the Firecrawl SDK instead of direct MCP functions, which impacts how the CLI handles Firecrawl-related arguments like --no-firecrawl and --search-query. | . Generated by AI Codebase Knowledge Builder . ",
+    "url": "/pinecone-mcp-helper/cli/#related-adrs",
+    
+    "relUrl": "/cli/#related-adrs"
+  },"16": {
+    "doc": "Pipeline Integration",
+    "title": "Pipeline Integration",
+    "content": "In the previous chapter about the Command Line Interface, we learned how to interact with our tool using simple commands. Now, let’s dive into the heart of our system: the Pipeline Integration. ",
+    "url": "/pinecone-mcp-helper/pipeline/",
+    
+    "relUrl": "/pipeline/"
+  },"17": {
+    "doc": "Pipeline Integration",
+    "title": "The Pipeline: Your Content Processing Maestro 🎼",
+    "content": "Imagine you’re a conductor leading an orchestra, but instead of musicians, you have different software components working together to transform raw code into searchable knowledge. That’s exactly what our pipeline does! . What is a Pipeline? . A pipeline is like a sophisticated assembly line for processing repositories. It takes a raw GitHub repository and transforms it through multiple stages: . | Clone the repository | Extract content | Analyze repository structure | Generate embeddings | Index in Pinecone | Optionally crawl related web content | . ",
+    "url": "/pinecone-mcp-helper/pipeline/#the-pipeline-your-content-processing-maestro-",
+    
+    "relUrl": "/pipeline/#the-pipeline-your-content-processing-maestro-"
+  },"18": {
+    "doc": "Pipeline Integration",
+    "title": "Real-World Scenario: Developer Knowledge Base",
+    "content": "Let’s consider a practical example. You’re building a knowledge base for a machine learning team, and you want to make all your repositories searchable. Pipeline Workflow . sequenceDiagram participant Repo as Git Repository participant Clone as Repository Cloner participant Repomix as Content Extractor participant Firecrawl as Web Crawler participant Research as Deep Research participant Embedder as Embedding Generator participant Pinecone as Vector Database participant Validator as Validation Repo-&gt;&gt;Clone: Clone repository Clone-&gt;&gt;Repomix: Extract code and documentation Repomix-&gt;&gt;Firecrawl: Extract URLs (optional) Firecrawl-&gt;&gt;Research: Perform deep research (optional) Repomix-&gt;&gt;Embedder: Generate vector embeddings Firecrawl-&gt;&gt;Embedder: Generate vector embeddings Research-&gt;&gt;Embedder: Enrich content Embedder-&gt;&gt;Pinecone: Store searchable vectors Pinecone-&gt;&gt;Validator: Validate ingestion . ",
+    "url": "/pinecone-mcp-helper/pipeline/#real-world-scenario-developer-knowledge-base",
+    
+    "relUrl": "/pipeline/#real-world-scenario-developer-knowledge-base"
+  },"19": {
+    "doc": "Pipeline Integration",
+    "title": "Pipeline Implementation Overview",
+    "content": "Here’s a more comprehensive representation of how our pipeline works: . def run_pipeline(args, config, env_vars): # Step 1: Clone or update repository repo_url = args.repo_url repo_name = extract_repo_name(repo_url) repo_path = clone_or_update_repo(repo_url) # Step 2: Execute Repomix and process output repomix_output_path = execute_repomix(repo_path) repo_chunks = parse_repomix_output(repomix_output_path) # Step 3: Initialize embedding function embedding_function = get_embedding_function(config, env_vars) # Step 4: Initialize Pinecone client and ensure index exists pinecone_client = init_pinecone(env_vars[\"PINECONE_API_KEY\"], env_vars[\"PINECONE_ENVIRONMENT\"]) index_name = get_nested_config(config, \"pinecone.index_name\", f\"{repo_name.lower()}-repo\") index = ensure_index_exists(pinecone_client, index_name, embedding_dimension, metric) # Step 5: Embed and upsert repository content repo_chunks_with_embeddings = embed_chunks(repo_chunks, embedding_function, embedding_dimension) repo_vectors = prepare_vectors_for_upsert(repo_chunks_with_embeddings) namespace = get_namespace_for_repo(repo_name) repo_upsert_results = upsert_vectors(index, repo_vectors, namespace) # Steps 6-9: Firecrawl processing (if enabled) if not args.no_firecrawl: firecrawl_client = init_firecrawl(env_vars[\"FIRECRAWL_API_KEY\"]) if args.search_query: # Use Firecrawl search firecrawl_results = search_web_content(firecrawl_client, args.search_query) else: # Extract and process URLs urls = extract_urls_from_repomix_output(repomix_output_path) firecrawl_results = scrape_urls(firecrawl_client, urls) firecrawl_chunks = process_firecrawl_results(firecrawl_results) # Step 10: Deep research (if enabled) if not args.no_deep_research and config[\"firecrawl\"][\"deep_research\"][\"enabled\"]: # Perform deep research and enrich content research_topics = args.search_query or extract_research_topics(repo_chunks) research_results = perform_deep_research(research_topics) enriched_chunks = enrich_content_with_research(repo_chunks, research_results) # Embed and upsert enriched content enriched_chunks_with_embeddings = embed_chunks(enriched_chunks, embedding_function) enriched_vectors = prepare_vectors_for_upsert(enriched_chunks_with_embeddings) upsert_vectors(index, enriched_vectors, f\"{namespace}-enriched\") # Step 11: Embed and upsert Firecrawl content if firecrawl_chunks: firecrawl_chunks_with_embeddings = embed_chunks(firecrawl_chunks, embedding_function) firecrawl_vectors = prepare_vectors_for_upsert(firecrawl_chunks_with_embeddings) firecrawl_upsert_results = upsert_vectors(index, firecrawl_vectors, namespace) # Step 12: Validate repository ingestion validation_results = validate_repository_ingestion(index, namespace, repo_path, repomix_output_path) # Step 13: Report results return results_summary . This function demonstrates the complete pipeline stages: . | Clone the repository | Extract meaningful content | Initialize embedding and Pinecone | Process repository content | Optionally process web content via Firecrawl | Optionally perform deep research | Validate the ingestion process | Report comprehensive results | . Key Pipeline Components . | Repository Cloning: Retrieves the latest code or updates local repository | Content Extraction: Uses Repomix to find relevant files and extract meaningful content | Web Content Processing: Optionally extracts URLs and crawls related web content | Deep Research: Optionally performs in-depth research on key topics to enrich content | Embedding Generation: Converts text to vector representations using configurable models | Vector Indexing: Stores vectors in Pinecone for semantic search | Validation: Verifies that ingested content is properly searchable | Results Reporting: Provides comprehensive metrics on the ingestion process | . ",
+    "url": "/pinecone-mcp-helper/pipeline/#pipeline-implementation-overview",
+    
+    "relUrl": "/pipeline/#pipeline-implementation-overview"
+  },"20": {
+    "doc": "Pipeline Integration",
+    "title": "Behind the Scenes: Configuration and Flexibility",
+    "content": "The pipeline isn’t just a rigid process. It’s configurable through a YAML file: . pipeline: max_file_size: 100KB excluded_paths: - \"*.test.js\" - \"node_modules/\" embedding_model: \"openai/text-embedding-ada-002\" . This configuration allows you to: . | Limit file sizes | Exclude unnecessary files | Choose embedding models | . ",
+    "url": "/pinecone-mcp-helper/pipeline/#behind-the-scenes-configuration-and-flexibility",
+    
+    "relUrl": "/pipeline/#behind-the-scenes-configuration-and-flexibility"
+  },"21": {
+    "doc": "Pipeline Integration",
+    "title": "Error Handling and Logging",
+    "content": "Our pipeline includes robust error handling: . try: results = run_pipeline(repository_url) logger.info(f\"Successfully processed {results['total_chunks']} chunks\") except PipelineError as e: logger.error(f\"Pipeline processing failed: {e}\") . ",
+    "url": "/pinecone-mcp-helper/pipeline/#error-handling-and-logging",
+    
+    "relUrl": "/pipeline/#error-handling-and-logging"
+  },"22": {
+    "doc": "Pipeline Integration",
+    "title": "Key Takeaways",
+    "content": ". | Pipelines transform complex processing into simple, manageable steps | Each stage of the pipeline has a specific, focused role | Configurations provide flexibility without complexity | . ",
+    "url": "/pinecone-mcp-helper/pipeline/#key-takeaways",
+    
+    "relUrl": "/pipeline/#key-takeaways"
+  },"23": {
+    "doc": "Pipeline Integration",
+    "title": "What’s Next?",
+    "content": "Ready to see how we integrate external web crawling? Let’s explore Firecrawl Integration in the next chapter! . ",
+    "url": "/pinecone-mcp-helper/pipeline/#whats-next",
+    
+    "relUrl": "/pipeline/#whats-next"
+  },"24": {
+    "doc": "Pipeline Integration",
+    "title": "Related ADRs",
+    "content": ". | ADR-0001: Use Firecrawl SDK - This ADR documents the decision to use the Firecrawl SDK for web content extraction, which is a key component of our pipeline. | ADR-0002: Pinecone Serverless Architecture - This ADR explains the choice of Pinecone’s serverless architecture for vector storage, which impacts how our pipeline interacts with the vector database. | ADR-0004: Repomix Processor Improvements - This ADR details improvements to the Repomix processor, which is central to our content extraction pipeline stage. | . Generated by AI Codebase Knowledge Builder . ",
+    "url": "/pinecone-mcp-helper/pipeline/#related-adrs",
+    
+    "relUrl": "/pipeline/#related-adrs"
+  },"25": {
+    "doc": "Firecrawl Integration",
+    "title": "Firecrawl Integration",
+    "content": "In the previous chapter about Pipeline Integration, we learned how to process repository content systematically. Now, let’s explore an exciting capability that transforms our tool from a simple repository processor into an intelligent web researcher: Firecrawl Integration! . ",
+    "url": "/pinecone-mcp-helper/firecrawl/",
+    
+    "relUrl": "/firecrawl/"
+  },"26": {
+    "doc": "Firecrawl Integration",
+    "title": "The Web Research Challenge 🕵️‍♀️",
+    "content": "Imagine you’re a developer working on a machine learning project. You have a repository with some initial code, but you want to enrich your research with real-world web content. How do you automatically gather relevant information without manually browsing the internet? . Enter Firecrawl Integration: your automated web research assistant! 🚀 . ",
+    "url": "/pinecone-mcp-helper/firecrawl/#the-web-research-challenge-%EF%B8%8F%EF%B8%8F",
+    
+    "relUrl": "/firecrawl/#the-web-research-challenge-️️"
+  },"27": {
+    "doc": "Firecrawl Integration",
+    "title": "What is Firecrawl Integration?",
+    "content": "Firecrawl is like having a super-smart research intern who can: . | Search the web based on your project’s context | Extract meaningful content from websites | Provide deep, contextual information | Transform unstructured web data into structured knowledge | . Key Capabilities . | Web Search: Find relevant web content automatically | Content Extraction: Pull meaningful text from websites | Deep Research: Generate comprehensive insights | Metadata Enrichment: Add context to your research | . ",
+    "url": "/pinecone-mcp-helper/firecrawl/#what-is-firecrawl-integration",
+    
+    "relUrl": "/firecrawl/#what-is-firecrawl-integration"
+  },"28": {
+    "doc": "Firecrawl Integration",
+    "title": "Solving a Real-World Problem: Research Automation",
+    "content": "Let’s walk through a concrete example. Suppose you’re developing a machine learning library about natural language processing (NLP). You want to automatically gather the latest research and best practices. The Magic of Automatic Web Research . # Import the required modules from repo_ingestion.firecrawl.crawler import init_firecrawl from repo_ingestion.firecrawl.search import search_web_content # Initialize the Firecrawl client with your API key firecrawl_client = init_firecrawl(api_key=\"YOUR_FIRECRAWL_API_KEY\") # Automatically research NLP topics research_results = search_web_content( firecrawl_client=firecrawl_client, query=\"latest NLP techniques\", limit=5, # Get top 5 results scrape_results=True # Extract content from search results ) # Now you have curated web content! for result in research_results: print(f\"Title: {result['title']}\") print(f\"URL: {result['url']}\") print(f\"Content snippet: {result['content'][:100]}...\") . Note: The above example shows the proper initialization and usage of the Firecrawl client. The actual implementation includes robust error handling and fallback mechanisms. When you run this code, Firecrawl does the heavy lifting: . | Searches the web for NLP content | Extracts meaningful text | Provides structured results | . ",
+    "url": "/pinecone-mcp-helper/firecrawl/#solving-a-real-world-problem-research-automation",
+    
+    "relUrl": "/firecrawl/#solving-a-real-world-problem-research-automation"
+  },"29": {
+    "doc": "Firecrawl Integration",
+    "title": "How Firecrawl Works: Behind the Scenes",
+    "content": "Let’s peek into the magical process with a sequence diagram: . sequenceDiagram participant User participant SearchFunction as search_web_content participant FirecrawlClient participant FirecrawlSDK as Firecrawl SDK participant MockImplementation as Mock Implementation participant Result User-&gt;&gt;SearchFunction: Query, limit, client SearchFunction-&gt;&gt;SearchFunction: Check environment &amp; parameters alt Firecrawl SDK Available SearchFunction-&gt;&gt;FirecrawlClient: Forward search request FirecrawlClient-&gt;&gt;FirecrawlSDK: Execute search FirecrawlSDK--&gt;&gt;FirecrawlClient: Return search results FirecrawlClient--&gt;&gt;SearchFunction: Formatted results else SDK Unavailable or Error SearchFunction-&gt;&gt;MockImplementation: Generate mock results MockImplementation--&gt;&gt;SearchFunction: Return mock data end SearchFunction-&gt;&gt;SearchFunction: Process &amp; structure results SearchFunction--&gt;&gt;User: Return final results . Note: This diagram shows the actual flow including fallback mechanisms and error handling, which are critical parts of our robust implementation. ",
+    "url": "/pinecone-mcp-helper/firecrawl/#how-firecrawl-works-behind-the-scenes",
+    
+    "relUrl": "/firecrawl/#how-firecrawl-works-behind-the-scenes"
+  },"30": {
+    "doc": "Firecrawl Integration",
+    "title": "Deep Dive: Code Implementation",
+    "content": "Let’s explore the core implementation in repo_ingestion/firecrawl/search.py and repo_ingestion/firecrawl/crawler.py: . # Actual implementation in repo_ingestion/firecrawl/search.py def search_web_content( firecrawl_client: Any, query: str, limit: int = 20, scrape_results: bool = True, mock_mode: bool = False ) -&gt; List[Dict[str, Any]]: \"\"\"Search for web content related to a query using Firecrawl. Falls back to a mock implementation if Firecrawl search is not available. \"\"\" try: logger.info(f\"Searching for web content with query: '{query}'\") # If in mock mode, skip trying real implementation if mock_mode: logger.info(\"Mock mode enabled, skipping real Firecrawl search implementation\") raise ImportError(\"Mock mode enabled\") # Check if Firecrawl API key is available import os firecrawl_api_key = os.environ.get('FIRECRAWL_API_KEY') if not firecrawl_api_key: logger.warning(\"FIRECRAWL_API_KEY not found in environment variables\") logger.info(\"Falling back to mock implementation due to missing API key\") raise ImportError(\"FIRECRAWL_API_KEY not available\") # Set up scrape options if needed scrape_options = { \"formats\": [\"markdown\"], \"onlyMainContent\": True, \"waitFor\": 1000 # Wait 1 second for dynamic content } if scrape_results else None # Use FirecrawlClient instance or other compatible client from repo_ingestion.firecrawl.crawler import FirecrawlClient if isinstance(firecrawl_client, FirecrawlClient): search_results = firecrawl_client.search( query=query, limit=limit, scrapeOptions=scrape_options ) # Process search results results = [] for result in search_results.get(\"results\", []): results.append({ \"url\": result.get(\"url\", \"\"), \"title\": result.get(\"title\", \"\"), \"content\": result.get(\"content\", {}).get(\"markdown\", \"\"), \"source_type\": \"web_search\", \"metadata\": { \"api_used\": \"firecrawl\", \"query\": query } }) return results except Exception as e: # Fall back to mock implementation logger.warning(f\"Error during Firecrawl search: {e}\") logger.info(\"Falling back to mock implementation\") # Create mock search results based on the query mock_results = [ # Mock result generation code omitted for brevity ] return mock_results . Note: The actual implementation is more complex with additional error handling, multiple client type support, and a robust mock implementation for testing. This example has been simplified while preserving the key architectural patterns. This function: . | Initializes a Firecrawl client | Searches the web | Structures the results | Handles potential errors gracefully | . ",
+    "url": "/pinecone-mcp-helper/firecrawl/#deep-dive-code-implementation",
+    
+    "relUrl": "/firecrawl/#deep-dive-code-implementation"
+  },"31": {
+    "doc": "Firecrawl Integration",
+    "title": "Advanced Features: Deep Research",
+    "content": "Beyond simple search, Firecrawl offers deep research capabilities: . # Import the deep research function from repo_ingestion.firecrawl.crawler import perform_deep_research # Perform deep research on a topic with detailed parameters async def research_ml_trends(): deep_research_results = await perform_deep_research( topics=[\"machine learning trends\"], max_depth=3, # How deep to explore related topics max_urls=10 # Maximum URLs to analyze per topic ) # Process the comprehensive research results for topic, results in deep_research_results.items(): print(f\"Research on {topic}:\") for result in results: print(f\"- {result['title']}\") print(f\" Source: {result['url']}\") . Note: The perform_deep_research function is asynchronous, allowing for efficient parallel processing of multiple research topics. This method: . | Explores multiple web sources | Analyzes content at different depths | Provides comprehensive insights | . ",
+    "url": "/pinecone-mcp-helper/firecrawl/#advanced-features-deep-research",
+    
+    "relUrl": "/firecrawl/#advanced-features-deep-research"
+  },"32": {
+    "doc": "Firecrawl Integration",
+    "title": "Practical Use Cases",
+    "content": "Firecrawl Integration is perfect for: . | Academic research automation: Gather papers and research findings automatically | Tech trend tracking: Stay updated on emerging technologies and industry shifts | Competitive intelligence: Monitor competitors’ products, features, and market positioning | Content recommendation systems: Enhance recommendations with fresh web content | Documentation enrichment: Supplement internal documentation with external references | Knowledge base construction: Build comprehensive knowledge bases from diverse sources | . FirecrawlClient Class . The core of our implementation is the FirecrawlClient class, which provides: . | SDK Integration: Seamless integration with the Firecrawl SDK when available | Fallback Mechanisms: Graceful degradation to mock implementations when needed | Error Handling: Robust error handling for network issues and API failures | Flexible Configuration: Support for various search and scraping options | . ",
+    "url": "/pinecone-mcp-helper/firecrawl/#practical-use-cases",
+    
+    "relUrl": "/firecrawl/#practical-use-cases"
+  },"33": {
+    "doc": "Firecrawl Integration",
+    "title": "Conclusion",
+    "content": "Firecrawl Integration transforms our repository processing tool into an intelligent web research assistant. By automatically searching, extracting, and structuring web content, we can enrich our projects with minimal manual effort. Ready to see how we process these repositories systematically? Let’s move on to Repository Processing! . ",
+    "url": "/pinecone-mcp-helper/firecrawl/#conclusion",
+    
+    "relUrl": "/firecrawl/#conclusion"
+  },"34": {
+    "doc": "Firecrawl Integration",
+    "title": "Related ADRs",
+    "content": ". | ADR-0001: Use Firecrawl SDK Instead of MCP Functions - This ADR documents the decision to use the Firecrawl SDK instead of MCP functions, explaining the benefits in terms of reliability, maintainability, and error handling. It provides important context for understanding the implementation choices in our Firecrawl integration. | . Generated by AI Codebase Knowledge Builder . ",
+    "url": "/pinecone-mcp-helper/firecrawl/#related-adrs",
+    
+    "relUrl": "/firecrawl/#related-adrs"
+  },"35": {
+    "doc": "Architecture Decision Records",
+    "title": "Architecture Decision Records",
+    "content": "This section contains the Architecture Decision Records (ADRs) for the Pinecone MCP Helper project. ADRs are used to document important architectural decisions, their context, and consequences. ",
+    "url": "/pinecone-mcp-helper/adr/",
+    
+    "relUrl": "/adr/"
+  },"36": {
+    "doc": "Architecture Decision Records",
+    "title": "Available ADRs",
+    "content": ". | Use firecrawl sdk instead of mcp functions | . ",
+    "url": "/pinecone-mcp-helper/adr/#available-adrs",
+    
+    "relUrl": "/adr/#available-adrs"
+  },"37": {
+    "doc": "Architecture Decision Records",
+    "title": "What is an ADR?",
+    "content": "An Architecture Decision Record (ADR) is a document that captures an important architectural decision made along with its context and consequences. ADRs are a lightweight way to document the key decisions that impact the architecture of a system. Each ADR includes: . | Title: A descriptive title that summarizes the decision | Status: Proposed, Accepted, Deprecated, or Superseded | Context: The forces at play, including technological, business, and team constraints | Decision: The response to these forces, clearly stating the direction taken | Consequences: The resulting context after applying the decision, including trade-offs and impacts | References: Any relevant supporting information or external resources | . ",
+    "url": "/pinecone-mcp-helper/adr/#what-is-an-adr",
+    
+    "relUrl": "/adr/#what-is-an-adr"
+  },"38": {
+    "doc": "Home",
+    "title": "Pinecone MCP Helper",
+    "content": "An intelligent repository ingestion pipeline that transforms code and web content into searchable vector databases. Get started now View it on GitHub . ",
+    "url": "/pinecone-mcp-helper/#pinecone-mcp-helper",
+    
+    "relUrl": "/#pinecone-mcp-helper"
+  },"39": {
+    "doc": "Home",
+    "title": "Overview",
+    "content": "Pinecone MCP Helper is an intelligent repository ingestion pipeline that transforms code and web content into searchable vector databases. It automates the process of extracting, embedding, and indexing content from Git repositories and web sources, enabling powerful semantic search and research capabilities using Pinecone’s vector database technology. Source Repository: https://github.com/decision-crafters/pinecone-mcp-helper.git . flowchart TD A0[\"Pipeline Integration\"] A1[\"Configuration Management\"] A2[\"Embedding Transformation\"] A3[\"Pinecone Vector Management\"] A4[\"Firecrawl Integration\"] A5[\"Repository Processing\"] A6[\"Validation and Quality Assurance\"] A7[\"Logging and Error Handling\"] A8[\"Command Line Interface\"] A0 -- \"Loads settings\" --&gt; A1 A0 -- \"Transforms content\" --&gt; A2 A0 -- \"Manages indexing\" --&gt; A3 A0 -- \"Extracts web content\" --&gt; A4 A0 -- \"Clones and processes\" --&gt; A5 A2 -- \"Creates vectors\" --&gt; A3 A4 -- \"Generates embeddings\" --&gt; A2 A0 -- \"Validates ingestion\" --&gt; A6 A0 -- \"Tracks operations\" --&gt; A7 A8 -- \"Triggers pipeline\" --&gt; A0 . ",
+    "url": "/pinecone-mcp-helper/#overview",
+    
+    "relUrl": "/#overview"
+  },"40": {
+    "doc": "Home",
+    "title": "Getting Started",
+    "content": "To get started with Pinecone MCP Helper, follow these steps: . | Install the package | Configure your Pinecone API key | Run your first ingestion pipeline | . ",
+    "url": "/pinecone-mcp-helper/#getting-started",
+    
+    "relUrl": "/#getting-started"
+  },"41": {
+    "doc": "Home",
+    "title": "Documentation Sections",
+    "content": "Browse through our documentation to learn more about specific features and capabilities: . | Command Line Interface | Pipeline Integration | Firecrawl Integration | Repository Processing | Embedding Transformation | Pinecone Vector Management | Configuration Management | Validation and Quality Assurance | Logging and Error Handling | Real-World Examples | . Generated by AI Codebase Knowledge Builder . ",
+    "url": "/pinecone-mcp-helper/#documentation-sections",
+    
+    "relUrl": "/#documentation-sections"
+  },"42": {
+    "doc": "Home",
+    "title": "Home",
+    "content": " ",
+    "url": "/pinecone-mcp-helper/",
+    
+    "relUrl": "/"
+  },"43": {
+    "doc": "Search Results",
+    "title": "Search Results",
+    "content": "Loading search results... ",
+    "url": "/pinecone-mcp-helper/search/",
+    
+    "relUrl": "/search/"
+  }
+}

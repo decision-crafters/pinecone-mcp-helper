@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Command Line Interface | Pinecone MCP Helper</title>
+    <link rel="stylesheet" href="/pinecone-mcp-helper/assets/css/style.css?v=">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    
+    <style>
+      /* Custom styles */
+      .search-container {
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+      }
+      .search-container input {
+        flex-grow: 1;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      .search-container button {
+        margin-left: 8px;
+        padding: 8px 12px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .navigation {
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .navigation a {
+        margin: 0 10px 0 0;
+        padding: 5px 10px;
+        text-decoration: none;
+        color: #0366d6;
+        border-radius: 3px;
+      }
+      .navigation a:hover {
+        background-color: #e9ecef;
+      }
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        border-radius: 4px;
+      }
+      .dropdown-menu a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+      .dropdown-menu a:hover {
+        background-color: #f1f1f1;
+      }
+      .show {
+        display: block;
+      }
+      .adr-banner {
+        background-color: #f0f7ff;
+        border-left: 4px solid #0366d6;
+        padding: 10px 15px;
+        margin: 20px 0;
+        border-radius: 0 4px 4px 0;
+      }
+      .chapter-title {
+        font-weight: bold;
+      }
+      .sidebar {
+        float: right;
+        width: 250px;
+        background-color: #f8f9fa;
+        padding: 15px;
+        margin-left: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+      .sidebar h3 {
+        margin-top: 0;
+      }
+      .sidebar ul {
+        padding-left: 20px;
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          float: none;
+          width: auto;
+          margin-left: 0;
+        }
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: "default",
+          securityLevel: "loose"
+        });
+        
+        
+        // Dropdown menu functionality
+        var dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(function(dropdown) {
+          dropdown.addEventListener('click', function(event) {
+            if (event.target.classList.contains('dropdown-toggle')) {
+              event.preventDefault();
+              this.querySelector('.dropdown-menu').classList.toggle('show');
+            }
+          });
+        });
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.matches('.dropdown-toggle')) {
+            document.querySelectorAll('.dropdown-menu.show').forEach(function(menu) {
+              menu.classList.remove('show');
+            });
+          }
+        });
+        
+        // Search functionality
+        var searchForm = document.getElementById('search-form');
+        if (searchForm) {
+          searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var query = document.getElementById('search-input').value.toLowerCase();
+            window.location.href = '/pinecone-mcp-helper/search.html?q=' + encodeURIComponent(query);
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      <header>
+        <h1><a href="https://decision-crafters.github.io/pinecone-mcp-helper/">Pinecone MCP Helper</a></h1>
+        <p>An intelligent repository ingestion pipeline that transforms code and web content into searchable vector databases</p>
+        
+        <!-- Search form -->
+        <div class="search-container">
+          <form id="search-form">
+            <input type="text" id="search-input" placeholder="Search documentation...">
+            <button type="submit"><i class="fas fa-search"></i></button>
+          </form>
+        </div>
+      </header>
+      
+      <div class="navigation">
+        <a href="/pinecone-mcp-helper/"><i class="fas fa-home"></i> Home</a>
+        
+        
+          
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/cli/"><i class="fas fa-book"></i> Chapter 1</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/pipeline/"><i class="fas fa-book"></i> Chapter 2</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/firecrawl/"><i class="fas fa-book"></i> Chapter 3</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+        
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle">ADRs ▾</a>
+          <div class="dropdown-menu">
+            <a href="/pinecone-mcp-helper/adr/">ADR Index</a>
+            
+            
+              <a href="/pinecone-mcp-helper/adr/0001-use-firecrawl-sdk/">0001-use-firecrawl-sdk</a>
+            
+              <a href="/pinecone-mcp-helper/adr/">index</a>
+            
+          </div>
+        </div>
+      </div>
+      
+      <div class="adr-banner">
+        <p>📝 <strong>Architecture Decision Records (ADRs)</strong> document important architectural decisions in this project. <a href="/pinecone-mcp-helper/adr/">View all ADRs</a></p>
+      </div>
+      
+      <main>
+        
+        
+        <h1 id="command-line-interface">Command Line Interface</h1>
+
+<p>Imagine you have a complex machine with many buttons and settings, but you want a simple, intuitive way to control it. That’s exactly what a Command Line Interface (CLI) does for our repository ingestion system!</p>
+
+<h2 id="what-is-a-command-line-interface">What is a Command Line Interface?</h2>
+
+<p>A CLI is like a powerful remote control for your software. Instead of clicking through multiple screens, you can type simple commands that tell the program exactly what you want to do. In our <code class="language-plaintext highlighter-rouge">pinecone-mcp-helper</code> project, the CLI is your gateway to processing repositories, extracting information, and storing it in Pinecone.</p>
+
+<h2 id="why-use-a-cli">Why Use a CLI?</h2>
+
+<p>Let’s consider a real-world scenario: You want to take a GitHub repository about machine learning and convert its contents into searchable vector embeddings. Without a CLI, this would be a complicated, multi-step process. With our CLI, it becomes as simple as typing one command!</p>
+
+<h2 id="basic-cli-usage">Basic CLI Usage</h2>
+
+<p>Here’s a simple example of how you might use our CLI:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python main.py https://github.com/username/ml-project <span class="nt">--log-level</span> DEBUG <span class="nt">--config</span> custom_config.yaml
+</code></pre></div></div>
+
+<p>This command tells our program to:</p>
+<ul>
+  <li>Process the repository at the given URL</li>
+  <li>Set logging to show detailed debug information</li>
+  <li>Use a custom configuration file</li>
+</ul>
+
+<h3 id="cli-arguments-explained">CLI Arguments Explained</h3>
+
+<p>Our CLI supports several helpful arguments:</p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">repo_url</code>: The main target - your repository’s URL or path to a local Git repository</li>
+  <li><code class="language-plaintext highlighter-rouge">--config</code>: Custom configuration file (optional, default: config.yaml)</li>
+  <li><code class="language-plaintext highlighter-rouge">--log-level</code>: Control how much information you see (DEBUG, INFO, WARNING, ERROR, CRITICAL)</li>
+  <li><code class="language-plaintext highlighter-rouge">--no-firecrawl</code>: Skip web URL extraction and processing</li>
+  <li><code class="language-plaintext highlighter-rouge">--no-deep-research</code>: Disable deep research on extracted topics</li>
+  <li><code class="language-plaintext highlighter-rouge">--search-query</code>: Specify a search query for Firecrawl and deep research (overrides automatic topic extraction)</li>
+  <li><code class="language-plaintext highlighter-rouge">--mock-mode</code>: Test the system without making real API calls</li>
+  <li><code class="language-plaintext highlighter-rouge">--log-file</code>: Path to a log file (if not provided, logs will only be written to the console)</li>
+</ol>
+
+<h2 id="how-it-works-behind-the-scenes">How It Works Behind the Scenes</h2>
+
+<p>Let’s peek inside the CLI’s inner workings with a simple sequence diagram:</p>
+
+<pre><code class="language-mermaid">sequenceDiagram
+    participant User
+    participant CLI
+    participant Config
+    participant Pipeline
+    participant Pinecone
+
+    User-&gt;&gt;CLI: Provide repository URL
+    CLI-&gt;&gt;Config: Load configuration
+    CLI-&gt;&gt;Pipeline: Start processing
+    Pipeline-&gt;&gt;Pinecone: Store vector embeddings
+</code></pre>
+
+<h2 id="code-walkthrough">Code Walkthrough</h2>
+
+<p>The magic happens in our <code class="language-plaintext highlighter-rouge">cli.py</code> file. Here’s a simplified view of the argument parsing:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">parse_args</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="p">.</span><span class="nc">ArgumentParser</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="sh">"</span><span class="s">Ingest Git repository content and associated web links into a Pinecone vector database.</span><span class="sh">"</span>
+    <span class="p">)</span>
+    
+    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span>
+        <span class="sh">"</span><span class="s">repo_url</span><span class="sh">"</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="sh">"</span><span class="s">URL of the Git repository to ingest or path to a local Git repository.</span><span class="sh">"</span>
+    <span class="p">)</span>
+    
+    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span>
+        <span class="sh">"</span><span class="s">--config</span><span class="sh">"</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="sh">"</span><span class="s">config.yaml</span><span class="sh">"</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="sh">"</span><span class="s">Path to the YAML configuration file. Default: config.yaml</span><span class="sh">"</span>
+    <span class="p">)</span>
+    
+    <span class="n">parser</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span>
+        <span class="sh">"</span><span class="s">--log-level</span><span class="sh">"</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="sh">"</span><span class="s">INFO</span><span class="sh">"</span><span class="p">,</span>
+        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">DEBUG</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">INFO</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">WARNING</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">ERROR</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">CRITICAL</span><span class="sh">"</span><span class="p">],</span>
+        <span class="n">help</span><span class="o">=</span><span class="sh">"</span><span class="s">Set the logging level. Default: INFO</span><span class="sh">"</span>
+    <span class="p">)</span>
+    
+    <span class="c1"># More arguments including no-firecrawl, no-deep-research, search-query, mock-mode, and log-file
+</span>    
+    <span class="k">return</span> <span class="n">parser</span><span class="p">.</span><span class="nf">parse_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This function creates a parser that understands the commands and options a user might provide. The actual implementation includes additional arguments for controlling Firecrawl integration, deep research, and logging options.</p>
+
+<h2 id="key-takeaways">Key Takeaways</h2>
+
+<ul>
+  <li>CLIs provide a powerful, flexible way to interact with complex systems</li>
+  <li>Our CLI makes repository processing simple and configurable</li>
+  <li>You can control the ingestion process with just a few arguments</li>
+</ul>
+
+<h2 id="whats-next">What’s Next?</h2>
+
+<p>Now that you understand the Command Line Interface, let’s explore how it integrates with our repository processing pipeline in <a href="02_pipeline_integration.md">Pipeline Integration</a>.</p>
+
+<h2 id="related-adrs">Related ADRs</h2>
+
+<ul>
+  <li><a href="adr/0001-use-firecrawl-sdk.md">ADR-0001: Use Firecrawl SDK</a> - This ADR explains the decision to use the Firecrawl SDK instead of direct MCP functions, which impacts how the CLI handles Firecrawl-related arguments like <code class="language-plaintext highlighter-rouge">--no-firecrawl</code> and <code class="language-plaintext highlighter-rouge">--search-query</code>.</li>
+</ul>
+
+<hr />
+
+<p>Generated by <a href="https://github.com/The-Pocket/Tutorial-Codebase-Knowledge">AI Codebase Knowledge Builder</a></p>
+
+      </main>
+      
+      <footer>
+        <hr>
+        <p>&copy; 2025 Decision Crafters. Powered by <a href="https://pages.github.com/">GitHub Pages</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

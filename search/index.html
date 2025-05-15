@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Search Results | Pinecone MCP Helper</title>
+    <link rel="stylesheet" href="/pinecone-mcp-helper/assets/css/style.css?v=">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    
+    <style>
+      /* Custom styles */
+      .search-container {
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+      }
+      .search-container input {
+        flex-grow: 1;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      .search-container button {
+        margin-left: 8px;
+        padding: 8px 12px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .navigation {
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .navigation a {
+        margin: 0 10px 0 0;
+        padding: 5px 10px;
+        text-decoration: none;
+        color: #0366d6;
+        border-radius: 3px;
+      }
+      .navigation a:hover {
+        background-color: #e9ecef;
+      }
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        border-radius: 4px;
+      }
+      .dropdown-menu a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+      .dropdown-menu a:hover {
+        background-color: #f1f1f1;
+      }
+      .show {
+        display: block;
+      }
+      .adr-banner {
+        background-color: #f0f7ff;
+        border-left: 4px solid #0366d6;
+        padding: 10px 15px;
+        margin: 20px 0;
+        border-radius: 0 4px 4px 0;
+      }
+      .chapter-title {
+        font-weight: bold;
+      }
+      .sidebar {
+        float: right;
+        width: 250px;
+        background-color: #f8f9fa;
+        padding: 15px;
+        margin-left: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+      .sidebar h3 {
+        margin-top: 0;
+      }
+      .sidebar ul {
+        padding-left: 20px;
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          float: none;
+          width: auto;
+          margin-left: 0;
+        }
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: "default",
+          securityLevel: "loose"
+        });
+        
+        
+        // Dropdown menu functionality
+        var dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(function(dropdown) {
+          dropdown.addEventListener('click', function(event) {
+            if (event.target.classList.contains('dropdown-toggle')) {
+              event.preventDefault();
+              this.querySelector('.dropdown-menu').classList.toggle('show');
+            }
+          });
+        });
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.matches('.dropdown-toggle')) {
+            document.querySelectorAll('.dropdown-menu.show').forEach(function(menu) {
+              menu.classList.remove('show');
+            });
+          }
+        });
+        
+        // Search functionality
+        var searchForm = document.getElementById('search-form');
+        if (searchForm) {
+          searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var query = document.getElementById('search-input').value.toLowerCase();
+            window.location.href = '/pinecone-mcp-helper/search.html?q=' + encodeURIComponent(query);
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      <header>
+        <h1><a href="https://decision-crafters.github.io/pinecone-mcp-helper/">Pinecone MCP Helper</a></h1>
+        <p>An intelligent repository ingestion pipeline that transforms code and web content into searchable vector databases</p>
+        
+        <!-- Search form -->
+        <div class="search-container">
+          <form id="search-form">
+            <input type="text" id="search-input" placeholder="Search documentation...">
+            <button type="submit"><i class="fas fa-search"></i></button>
+          </form>
+        </div>
+      </header>
+      
+      <div class="navigation">
+        <a href="/pinecone-mcp-helper/"><i class="fas fa-home"></i> Home</a>
+        
+        
+          
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/cli/"><i class="fas fa-book"></i> Chapter 1</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/pipeline/"><i class="fas fa-book"></i> Chapter 2</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+              
+                <a href="/pinecone-mcp-helper/firecrawl/"><i class="fas fa-book"></i> Chapter 3</a>
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+          
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+        
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle">ADRs ▾</a>
+          <div class="dropdown-menu">
+            <a href="/pinecone-mcp-helper/adr/">ADR Index</a>
+            
+            
+              <a href="/pinecone-mcp-helper/adr/0001-use-firecrawl-sdk/">0001-use-firecrawl-sdk</a>
+            
+              <a href="/pinecone-mcp-helper/adr/">index</a>
+            
+          </div>
+        </div>
+      </div>
+      
+      <div class="adr-banner">
+        <p>📝 <strong>Architecture Decision Records (ADRs)</strong> document important architectural decisions in this project. <a href="/pinecone-mcp-helper/adr/">View all ADRs</a></p>
+      </div>
+      
+      <main>
+        
+        
+        <h1>Search Results</h1>
+
+<div id="search-results">
+  <p>Loading search results...</p>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get the query parameter from the URL
+    var urlParams = new URLSearchParams(window.location.search);
+    var query = urlParams.get('q');
+    
+    if (!query) {
+      document.getElementById('search-results').innerHTML = '<p>No search query provided. Please try searching again.</p>';
+      return;
+    }
+    
+    // Display the search query
+    document.getElementById('search-results').innerHTML = '<p>Searching for: <strong>' + query + '</strong></p><div id="results-list"></div>';
+    
+    // Perform the search
+    searchDocumentation(query.toLowerCase());
+  });
+  
+  function searchDocumentation(query) {
+    // List of pages to search
+    var pages = [
+      { url: '/', title: 'Home' },
+      { url: '/01_command_line_interface.html', title: 'Command Line Interface' },
+      { url: '/02_pipeline_integration.html', title: 'Pipeline Integration' },
+      { url: '/03_firecrawl_integration.html', title: 'Firecrawl Integration' },
+      { url: '/04_repository_processing.html', title: 'Repository Processing' },
+      { url: '/05_embedding_transformation.html', title: 'Embedding Transformation' },
+      { url: '/06_pinecone_vector_management.html', title: 'Pinecone Vector Management' },
+      { url: '/07_configuration_management.html', title: 'Configuration Management' },
+      { url: '/08_validation_and_quality_assurance.html', title: 'Validation and Quality Assurance' },
+      { url: '/09_logging_and_error_handling.html', title: 'Logging and Error Handling' },
+      { url: '/10_real_world_examples.html', title: 'Real-World Examples' }
+    ];
+    
+    var resultsContainer = document.getElementById('results-list');
+    var resultsCount = 0;
+    
+    // Fetch and search each page
+    var promises = pages.map(function(page) {
+      return fetch('/pinecone-mcp-helper' + page.url)
+        .then(response => response.text())
+        .then(html => {
+          // Create a temporary element to parse the HTML
+          var tempElement = document.createElement('div');
+          tempElement.innerHTML = html;
+          
+          // Extract the main content
+          var content = tempElement.querySelector('main');
+          if (!content) return null;
+          
+          // Get the text content
+          var textContent = content.textContent.toLowerCase();
+          
+          // Check if the query appears in the content
+          if (textContent.includes(query)) {
+            resultsCount++;
+            
+            // Find the context around the match
+            var index = textContent.indexOf(query);
+            var start = Math.max(0, index - 100);
+            var end = Math.min(textContent.length, index + query.length + 100);
+            var context = textContent.substring(start, end);
+            
+            // Highlight the query in the context
+            var highlightedContext = context.replace(
+              new RegExp(query, 'gi'), 
+              match => '<mark>' + match + '</mark>'
+            );
+            
+            // Create a result item
+            var resultItem = document.createElement('div');
+            resultItem.className = 'search-result';
+            resultItem.innerHTML = `
+              <h3><a href="/pinecone-mcp-helper${page.url}">${page.title}</a></h3>
+              <p>...${highlightedContext}...</p>
+            `;
+            
+            return resultItem;
+          }
+          
+          return null;
+        })
+        .catch(error => {
+          console.error('Error fetching page:', error);
+          return null;
+        });
+    });
+    
+    // Process all results
+    Promise.all(promises)
+      .then(results => {
+        // Filter out null results
+        var validResults = results.filter(result => result !== null);
+        
+        // Display the results
+        if (validResults.length > 0) {
+          validResults.forEach(result => {
+            resultsContainer.appendChild(result);
+          });
+          
+          // Add a summary
+          var summary = document.createElement('p');
+          summary.innerHTML = `Found <strong>${validResults.length}</strong> results for <strong>${query}</strong>.`;
+          resultsContainer.insertBefore(summary, resultsContainer.firstChild);
+        } else {
+          resultsContainer.innerHTML = `<p>No results found for <strong>${query}</strong>. Try a different search term.</p>`;
+        }
+      });
+  }
+</script>
+
+<style>
+  .search-result {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .search-result h3 {
+    margin-top: 0;
+  }
+  
+  .search-result p {
+    margin-bottom: 0;
+    color: #666;
+  }
+  
+  mark {
+    background-color: #ffeb3b;
+    padding: 2px;
+    border-radius: 2px;
+  }
+</style>
+
+      </main>
+      
+      <footer>
+        <hr>
+        <p>&copy; 2025 Decision Crafters. Powered by <a href="https://pages.github.com/">GitHub Pages</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>
