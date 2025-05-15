@@ -26,27 +26,26 @@ echo "📊 Detected Ruby version: $RUBY_VERSION"
 VENDOR_DIR="$PROJECT_ROOT/vendor/bundle"
 mkdir -p "$VENDOR_DIR"
 
-# Install compatible bundler version
-echo "📦 Installing compatible Bundler..."
-gem install bundler
-
 # Navigate to the docs directory
 cd "$PROJECT_ROOT/docs"
 
-# Install dependencies
+# Create a simple _sass directory with just-the-docs import if it doesn't exist
+if [ ! -d "_sass" ]; then
+    echo "📚 Creating _sass directory for theme imports..."
+    mkdir -p "_sass"
+    echo "// Just the Docs theme placeholder" > "_sass/just-the-docs.scss"
+fi
+
+# Install dependencies using system bundler
 echo "📦 Installing dependencies..."
 bundle config set --local path "$VENDOR_DIR"
 bundle install
-
-# Run Jekyll lint to check for syntax errors
-echo "🔍 Running Jekyll lint to check for syntax errors..."
-bundle exec jekyll build --trace
 
 # Build and serve the site
 echo "🔨 Building and serving the documentation site..."
 echo "📝 Documentation will be available at http://localhost:4000"
 echo "🛑 Press Ctrl+C to stop the server"
-bundle exec jekyll serve --livereload --baseurl ''
+bundle exec jekyll serve --livereload --baseurl '' --trace
 
 # This part will only execute if the server is stopped
 echo "✅ Local server stopped"
