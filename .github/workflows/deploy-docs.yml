@@ -15,7 +15,7 @@ permissions:
 
 # Allow only one concurrent deployment
 concurrency:
-  group: "pages"
+  group: "docs-deploy"
   cancel-in-progress: true
 
 jobs:
@@ -45,9 +45,27 @@ jobs:
         env:
           JEKYLL_ENV: production
           
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: docs/_site
-          branch: gh-pages
-          clean: true
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          
+      - name: Deploy to docs directory in main branch
+        run: |
+          # Create a temporary directory for the built site
+          mkdir -p /tmp/docs-site
+          cp -R docs/_site/* /tmp/docs-site/
+          
+          # Switch to gh-pages branch or create it if it doesn't exist
+          git checkout -B gh-pages
+          
+          # Remove old content and replace with new content
+          rm -rf *
+          cp -R /tmp/docs-site/* .
+          
+          # Add and commit changes
+          git add .
+          git commit -m "Update documentation site" || echo "No changes to commit"
+          
+          # Push changes
+          git push -f origin gh-pages
